@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Queen City Analytics</title>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+  <!-- Custom styles for this template -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/blog-home.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='images/qc-analytics.png')}}">
+
+
+
+</head>
+
+<body>
+  <div class="page-container">
+
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a href="{{ url_for('main')}}">
+        <img class='logo-img' src="{{ url_for('static', filename='images/qc-analytics.png')}}" alt="">
+      </a>
+      <a class="navbar-brand" href="{{ url_for('main')}}">Queen City Analytics</a>
+      <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Blog
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Live Dashboards</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">QC Analytics Mission</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Shop</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class='main-body'>
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Queen City Analytics 2019</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+  </div>
+
+  <script src="{{url_for('static', filename='js/jquery-3.3.1.slim.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+  <!-- Bootstrap core JavaScript
+  <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/bundle.min.js')}}"></script>
+  -->
+</div>
+</body>
+
+</html>

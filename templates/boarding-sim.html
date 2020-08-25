@@ -1,0 +1,144 @@
+<!-- Bootstrap core CSS -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+<!-- Custom styles for this template -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/blog-home.css') }}">
+
+{% extends "nav-template.html" %}
+
+{% block content %}
+<div id="boarding-sim" class="blog-template">
+  <div class="header-text">
+      Data Science without Data?
+  </div>
+</div>
+<div class="blog-text">
+
+  <h1><strong> Data Science without Data? Computer Simulation with Flight Boarding
+    Strategies</strong><br></h1>
+  <p class="author">August 19, 2018  /  Ned Hulseman</p>
+  <p>
+    <strong>Why No Data?</strong><br>
+      For airlines, efficiency is everything when getting passengers on and off the
+      plane. When the plane is on the ground they are not making money, which means
+      they are losing money because of costs. It is very important to get the planes
+      ready to go and back in the air as quickly as possible. One of the difficulties
+      of getting planes back in the air is getting passengers on and off the plane
+      in a timely manner.
+      <br><br>
+      Airlines use many different methods of boarding. Many use zones and board either
+      back to front or front to back. It is most common to see 4-5 zones, dependent
+      on the size of the flight, but this is something they can tweak for efficiency.
+      This is generally the old-school way of doing things. Southwest is
+      interesting in that they have everyone just pick seats. This essentially serves
+      as boarding in random order, with the exception of tendencies of humans to prefer
+      certain seats (ie windows or aisles, or just anything but the middle!) or to
+      prefer sitting as a family or with a group.
+      <br><br>
+      To find the most efficient boarding technique a data scientist would typically say,
+      "OKAY airlines, give me a bunch of data on your methods and boarding times, and
+      I will find the most efficient boarding method." The airline responds and says,
+      "well we would have to put in a lot of infrastructure in our processes to collect
+      this data, we have to give the airline personnel a way of recording the boarding
+      times, and that introduces costs, as well as opportunities for bias if the
+      personnel messes up the records." Basically the airline says its too expensive
+      and they feel better just winging the boarding process.
+      <br><br>
+      Well, maybe there is a less costly method of solving the problem. The
+      computer-scientist part of the data scientist, might realize they could solve
+      this problem without data and just create a boarding simulator. This would
+      cost the airline no money and decrease the chance for unreliable data.
+      <br><br><br>
+      <strong>Passenger Rules</strong><br>
+      I wrote a program where you can choose the boarding method, number of zones and
+      number of rows/aisles on the plane and it will run through a simulation a number
+      of times.
+      <br><br>
+      To start off, we can go over some of the rules that I gave the boarding passengers
+      to make this simulation as realistic as possible, and I will also propose some
+      ideas that could be implemented to give this simulation an even more realistic
+      flow.
+      <br><br>
+      Each passenger goes through around an 11 step decision process to decide what to
+      do or where to move. This decision process is based largely on where the passenger
+      is, as well as what the person in front of them is doing. A passenger will never
+      get within a certain distance of the person in front of them, given that the
+      person is not seated. This certain distance is what I refer to in the code as
+      a 'personal_bubble'.
+      <figure class="image-right" style="width: 377;">
+        <img  src="{{ url_for('static',filename='images/boarding_image.jpg') }}" width="377" height="588" />
+        <figcaption>
+          A still image of the simulation running a back-to-front simulation
+         </figcaption>
+      </figure>
+
+      <br><br>
+      Once a passenger reaches their assigned row, then the passenger will pause fo
+      r an allotted amount of time simulating a passenger placing their baggage in
+      the overhead compartment. I decided to make this time over exaggerated, so
+      that we can see large differences between the different methods. Storing
+      luggage and getting seated is the main cause of delay when boarding a plane.
+      <br><br>
+      For actual implementation of this simulation for an airline, the programmer
+      would want to use scaled dimensions of the plane and jet tunnel, as well as
+      accurate speeds/times that it takes for a passenger to walk through the
+      the tunnel and plane. They could then speed up the simulation from there.
+      Our simulation times are not accurate enough to scale to actual boarding
+      times, we are just concerned with the differences in boarding times
+      between the methods.
+
+      When running this simulation, I use graphics to visualize what is actually
+      happening (seen above).
+      This representation is not necessary to solve the problem but can give your
+      audience a much better
+      look at what is happening. The code for this simulation can be found on
+      <a href="https://github.com/nedhulseman/boarding-simulation" target="_blank" rel="noopener">Github</a>.
+      <br><br>
+
+      <video src="{{ url_for('static',filename='images/simulation.mp4') }}" autoplay >
+
+      </video>
+      <br><br><br>
+      <strong>Boarding Methods</strong><br>
+      I have added 3 main boarding methods as well as other parameters someone can
+       choose within those methods. The 3 methods are:
+      <ol>
+      	<li>Random Seat Assignment / Unassigned Seats</li>
+      	<li>Front to Back</li>
+      	<li>Back to Front</li>
+      </ol>
+      Within those methods you can also choose the number of zones (NA for random seat
+      assignment), number of aisles and number of rows.
+      <br><br><br>
+      <strong>Results</strong><br>
+      After watching the 3 boarding methods simulate a few times, I noticed that the
+      back to front and front to back usually had roughly 2-3 people storing their
+      luggage and sitting down at a single point in time. The random seating method
+      usually has 3-5 people storing their luggage. I believe that this is why the
+      random method is the fastest boarding method, as we will find out below.
+
+      After running 150 simulations (50 for each method), which took roughly 3 hours,
+      I found that the random boarding method is the most consistent and quickest
+      method of the
+      <figure class="image-right" style="width: 432;">
+        <img   src={{ url_for('static',filename='images/Simulation_hist.png') }} width="432" height="288" />
+        <figcaption style="width: 400;">
+          Running 150 simulations, the random seat assignment is the undisputed winner
+          from the simulations
+        </figcaption>
+      </figure>
+
+      three boarding methods. For the simulations, I used 28 rows, 6 aisles and 4
+      boarding zones. This is  representative of a midsize Boeing 737 passenger
+      airplane.
+
+      The results of the 150 simulations can be seen in the graphic to the right,
+      which was created using the Matplotlib module. The blue which represents the
+      random boarding method, is the fastest and most consistent while the front
+      to back method is the slowest and most inconsistent. The seconds measurement
+      does not scale to any real-time boarding time. The idea is really to try
+      and see if we can find differences in the boarding times of the different
+      methods. We see that the orange distribution, which represents the back to
+      front method is very consistent but slightly slower than the random method.
+  </p>
+</div>
+{% endblock %}

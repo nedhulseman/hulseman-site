@@ -1,0 +1,224 @@
+<!-- Bootstrap core CSS -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+<!-- Custom styles for this template -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/blog-home.css') }}">
+
+{% extends "nav-template.html" %}
+
+{% block content %}
+<div id="xgboost-kaggle" class="blog-template">
+  <div class="header-text">
+      An XGBoost Walkthrough with the Kaggle Allstate Data
+  </div>
+</div>
+<div class="blog-text">
+
+  <h1><strong> An XGBoost Walkthrough with the Kaggle Allstate Data</strong><br></h1>
+  <p class="author">August 19, 2018  /  Ned Hulseman</p>
+  <p>
+    Extreme gradient boosting, or XGBoost is one of the most powerful algorithms
+    out today. It is extremely popular in data science and tends to perform
+    phenomenally in many different Kaggle competitions. The Allstate claims
+    competition is a good example of where a simple xgboost model can perform
+    very well and get you a fairly high ranking on the leader-boards, if tuned
+    properly. Today we are going to do a simple walk-through of the Allstate
+    problem and learn how to code an xgboost model in Python, along the way
+    we'll do some simple data exploration before tuning our model to perform
+    well on test data.
+
+    <br><br>
+    Code can be found on 
+    <a href="https://github.com/nedhulseman/Allstate/blob/master/modeling.py"
+    target="_blank" rel="noopener">Github</a>. The actual tuning of the model,
+    as well as the creation of  R code was created in collaboration with 
+    <a href="https://www.linkedin.com/in/james-noe-65a3b251/" target="_blank"
+    rel="noopener">James Noe</a>. I will not go over the R code, but it is
+    provided on <a href="https://github.com/nedhulseman/Allstate/blob/master/modeling.r"
+    target="_blank" rel="noopener">github</a>. I will be using Python in my
+    demonstration today, as well as the xgboost package.
+    <br><br>
+    To start off with I want to take a look at the data to get an idea with
+    what we are dealing with. The data frame has 188,318 rows and 132 columns.
+    There is an id column, 116 categorical variables, 14 continuous variables
+    and one loss variable which will be our dependent/predictor variable. All
+    of the categorical variables have levels of A, B, C... etc and all of the
+    variable names are simply numbered so we have no actual context of what
+    these variables mean. Although some are somewhat obvious, for example
+    one categorical variable has 50 levels so that is probably a variable
+    for each state. Lets start off by taking a glance at the independent
+    variables, loss.
+    <br><br>
+    The loss variable has a minimum of .67 and a max value of approximately
+    120,000. Loss is severely right distributed (figure below), so it may be
+    worth taking the log of the loss variable to see if having a normally
+    distributed independent variable might add some predictive power. Once we
+    look at the log(loss), we get the histogram below on the right that is very
+    nicely distributed. We will look later to see if predicting the log loss,
+    as opposed to the loss, gives us more predictive accuracy.
+    <br><br>
+
+    <img class="image-right" src="https://nedhulseman.files.wordpress.com/2017/12/log-loss-hist.png?w=622" alt="log loss hist.png" width="315" height="221" />
+    Next, we can take a look at the categorical variables. There are a lot of
+    these, 116 to be exact. 72 categorical variables have only 2 levels and many of them have severely narrow distributions, IE a lot of A-levels and not many B-levels. The number
+    of levels, as well as the distribution of the levels for all categorical variables can be seen in lines 81-90.
+
+    <br><br><br>
+    <span style="width:100%;">
+      <img class="image-left" src="https://nedhulseman.files.wordpress.com/2017/12/loss-hist1.png?w=688" alt="loss hist.png" width="311" height="218" />
+      <img class="image-right" src="https://nedhulseman.files.wordpress.com/2017/12/cat116.png" alt="cat116" width="346" height="240" />
+    </span><br><br><br><br><br><br><br><br><br><br><br>
+    There are a few 3-level variables, lot of 4-level variables and a few with a
+     higher number of levels. Cat116 has the most levels at 326 (as seen on the right).
+    You can check out the brief continuous variable investigation in the code,
+    but there is not much to detail here.
+    <br><br>
+
+    The main difficulty in preparing the data to be able to be input into the
+    xgboost algorithm is going to be from the categorical variables. This
+    algorithm does not take objects/strings as inputs, only numeric variables.
+    So we are going to have to do 2 things to the categorical variables to
+    make this algorithm work properly.
+    <br><br>
+    <ol>
+    	<li><strong>Label Encoding: </strong>Change the levels from A, B and C to 1, 2 and 3.</li>
+    	<li><strong>One Hot Encoder: </strong>make each level of each variable its own column</li>
+    </ol>
+    <br><br>
+    <strong>Label Encoding</strong>
+    <br>
+    We will do both of these steps in one for-loop (lines 104-115); however,
+    we will go over the process separately. The first step, label encoding is
+    a bit easier to understand. The code for this can be seen below, and in
+    lines 121-123 in the source code.
+    <br><br>
+    <figure class='code-block'>
+      <pre>
+        <code contenteditable spellcheck="false">
+    label_encoder = LabelEncoder()#instantiates labelEncoder
+    feature=label_encoder.fit_transform(cat[:, i]) #changes strings to numbers
+    feature=feature.reshape(cat.shape[0], 1) #reshape from (,5) to (0, 5)
+        </code>
+      </pre>
+    </figure>
+    <br><br>
+
+    First, we need to instantiate the label encoder object and save it to
+    label_encoder. Next we can call the fit_transform method on each column
+    of the cat numpy array. To understand exactly
+    <img class="image-left" src="https://nedhulseman.files.wordpress.com/2017/12/label-encoder-example.png" alt="label encoder example" width="275" height="206" />
+    what is happening here, we will look at an example of a 3-level categorical
+    variable. This can be seen to the left. The original categorical variable,
+    we will use cat73, has 3 levels A, B and C. We transform each level to the
+    numeric values 1, 2 and 3. You might think that now that we have transformed
+    the strings to numeric values that xgboost can now handle these variables,
+    but that is not exactly correct. Though it would run, it would incorrectly
+    interpret these variables as having a continuous relationship. This
+    is why we will need to complete the second step of one hot encoding.
+    Before we can do that, we will have to reshape the column. I didn't
+    mention this earlier, but I changed the columns from data frames to
+    numpy arrays, since sometimes these are a bit easier to wrangle. We
+    will have to reshape these columns so that we can use the one hot encoder,
+    because of the numpy transformation. The reshape method will change
+    each column from (188,318, ) to (188,318, 1), so we can concatenate
+    the columns together after we label encode them. Now we are able one
+    hot encode the variables.
+    <br><br>
+    <strong>One Hot Encoding</strong>
+    <br>
+    In order to have xgboost interpret the categorical variables properly,
+    we will have to make each level of each variable its own column.
+    <br><br>
+    <figure class='code-block'>
+      <pre>
+        <code contenteditable spellcheck="false">
+      onehot_encoder=OneHotEncoder(sparse=False) #instantiates onehotencoder
+      feature=onehot_encoder.fit_transform(feature) #turns levels to columns
+        </code>
+      </pre>
+    </figure>
+    <br>
+
+
+    <img class="image-right" src="https://nedhulseman.files.wordpress.com/2017/12/hot-encoded.png" alt="hot encoded" width="240" height="189" />
+    The first line instantiates a OneHotEncoder object, with the sparse=False
+    argument. Then we will use the fit_transform method and call it on feature,
+    which is what our label_encoded column is. Using this method we get data
+    that looks similar to what is on the right. Each level, A, B and C becomes
+    its own variable, with a a binary response. Using this format, the xgboost
+    algorithm will read the data correctly. The entire for-loop to prepare the
+    data correctly can be seen below.
+    <br><br>
+    <figure class='code-block'>
+      <pre>
+        <code contenteditable spellcheck="false">
+    encoded_cat=None
+    for i in range(0, cat.shape[1]):
+        label_encoder = LabelEncoder()#instantiates labelEncoder
+        feature=label_encoder.fit_transform(cat[:, i]) #changes strings to numbers
+        feature=feature.reshape(cat.shape[0], 1) #reshape from (0,5) to ()
+        onehot_encoder=OneHotEncoder(sparse=False) #instantiates onehotencoder
+        feature=onehot_encoder.fit_transform(feature) #turns levels to columns
+
+    if encoded_cat==None:
+        encoded_cat=feature
+    else:
+        encoded_cat=np.concatenate((encoded_cat, feature), axis=1)
+    X=np.concatenate((encoded_cat, cont), axis=1)
+        </code>
+      </pre>
+    </figure>
+    <br><br>
+    Now that our data is correctly prepared for xgboost, I want to quickly detail
+    some of the arguments and hyper-parameters for xgboost. I will not go over
+    all of the potential arguments, but rather only the ones I actually used.
+    Full documentation for XGBRegressor can be found
+    <a href="http://xgboost.readthedocs.io/en/latest/python/python_api.html" target="_blank" rel="noopener">here</a>.
+    <br><br>
+    <figure class='code-block'>
+      <pre>
+        <code contenteditable spellcheck="false">
+          model=XGBRegressor(learning_rate=0.08,
+                             max_depth=10,
+                             objective='reg:linear',
+                             gamma=0.2,
+                             subsample=0.9,
+                             n_estimators=100,
+                             )
+        </code>
+      </pre>
+    </figure>
+    <br><br>
+
+    Overall gradient boosting uses 2 parameters to prevent from over-fitting.
+    The learning-rate, sometimes referred to as eta, and the number of trees,
+    or in other words, number of features to be used (n_estimators). The
+    learning rate is basically the same thing as the learning rate when
+    creating neural network models. It is the step-size the algorithm takes
+    when estimating feature coefficients. The smaller the learning rate, the
+    less prone to over-fitting the model will be. Similarly, the less features
+    you use (n_estimators), the less prone you will be to over fitting.
+    At first 100 features may seem like a lot, but remember that when we
+    one hot encode our variables, each level becomes its own variable.
+    So instead of the 130 variables we originally had, we now have 1,153 variables.
+    <br><br>
+    The objective argument is an important one to get correct. We have a
+    continuous variable so we want the "reg:linear" argument. If we were
+    predicting on the iris dataset which has a categorical predictor, we
+    would want to use XGBClassifier instead of XGBRegressor and we would
+    want objective to be "binary:logistic". Max depth is the maximum depth of a
+    tree and gamma is the minimum loss reduction for using a feature.
+    <br><br>
+    The arguments used above are the actual values that James Noe and I found
+    to be optimal. Using these values will give us an 1150 mean absolute error
+    on test data. This is not bad for just throwing a simple xgboost model
+    at the data. In the last two lines of the source code, it provides a plot
+    of variable importance, if you wanted to continue improving upon this
+    model, that may be a good place to start. As well as looking into
+    ensembling a few different types of models.
+    <br><br>
+    If you are looking for another good xgboost example, especially one with a
+    categorical predictor, I would point you
+    <a href="https://machinelearningmastery.com/data-preparation-gradient-boosting-xgboost-python/" target="_blank" rel="noopener">here</a>.
+  </p>
+</div>
+{% endblock %}

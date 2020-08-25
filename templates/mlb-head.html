@@ -1,0 +1,251 @@
+<!-- Bootstrap core CSS -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+<!-- Custom styles for this template -->
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/blog-home.css') }}">
+
+
+{% extends "nav-template.html" %}
+{% block content %}
+  <div id="image-scraping" class="blog-template">
+  <div class="header-text">
+      Scraping MLB Headshots with BeautifulSoup
+  </div>
+</div>
+<div  class="blog-text">
+
+<h1><strong>Scraping MLB Headshot Images with BeautifulSoup and Requests</strong></h1>
+<p class="author">August 19, 2018  /  Ned Hulseman</p>
+Beautiful Soup is a Python module that is a tremendous resource when trying to get
+ information or data from a
+ web source. I feel that the best way to get your head around Beautiful Soup is to
+ look at examples and practice implementing the module. In this post, I will walk
+ through a class that is able to get MLB baseball teams, rosters and headshots
+  from baseball-reference.com. I will use these headshots in my next post to
+  slice the images up and train a neural network to put them back together.
+<br><br><br>
+The code for this demonstration can be found on <a href="https://github.com/nedhulseman/MLB_headshot_stitching/tree/master" target="_blank" rel="noopener">Github</a>.
+<br><br><br>
+Before I dive in, I want to preface by saying that I am by no means Beautiful Soup savant. I did create a BS
+ (Beautiful Soup) script that scraped the images I need for this project and I wanted to share that to the open source community.
+<br><br><br>
+<strong>What is Beautiful Soup?</strong>
+<br>
+BS takes HTML jargin as an input and gives the user the ability to access all of the information in a clean and easy
+manner. It is Python's most widely used library for parsing HTML. For those of you who aren't too familiar with HTML,
+that is not a problem as it does not take long to pick up on what is happening with the code. Parsing HTML basically
+entails figuring out what tags are what. For data science purpose you will be looking at table tags fairly frequently.
+The most common ones are &lt;table&gt; which defines a table, &lt;th&gt;a table head, &lt;tr&gt; a table row and
+&lt;td&gt; a table cell.<br><br>
+Though there are many many other tags that will be useful to know as well. For example, if you are interesting in
+mining text from a website you will be looking mostly at paragraph tags (&lt;p&gt;).
+
+<br><br><br>
+<strong>How to get the HTML?</strong>
+<br>
+To start, go to any webpage and right click anywhere on the screen and then click view page source. This will open up the
+raw HTML, Javascript, CSS or whatever code that is used to create the webpage. There are libraries and ways to parse
+Javascript and languages other than HTML, but that won't be covered in this article. If you are interested I would
+recommend this <a href="https://www.youtube.com/watch?v=FSH77vnOGqU" target="_blank" rel="noopener">Sentdex</a> video.
+Another common alternative to requests & Beautiful Soup is Selenium. Selenium can directly interact with JavaScript,
+which is necessary when simple HTML parsing is not enough.
+<br><br>
+
+Lets navigate to <a href="https://www.baseball-reference.com/teams/" target="_blank" rel="noopener">Baseball Reference</a>.
+Right click on the page and click <i>view page source</i> (This is for Google Chrome, other browsers may have a different path).
+This will pull up the raw HTML in a new tab. Don't let the code scare you too much as this code has been compressed to minimize the
+space requirments. This is often refered to as <i>uglified</i> code. so is difficult
+to read. In this code you may see a combination of HTML, JavaScript, JQuery, CSS or others.
+
+<br><br>
+To dip your toes in the water, find something on the actual page like a table or an image and search the raw html for a
+keyword. For example the very first table is called 'Active Franchises'. If you cntl-f that keyword in the raw HTML,
+you will get 3 matches. The third one creates the actual table and stores all of the information for that table.
+
+<br><br>
+This is the tag for the corresponding table for the active franchises. Cntl-f will definitely be your friend when reading
+through raw HTML to find what you need. You may want to copy and paste the code into a text editor like notepad++ to
+beautify the code for easier reading.
+
+<br><br>
+After figuring out what you need from the HTML you are going to have to actually get the raw HTML into Python, to pass
+to BS. This is usually done with the requests or urllib.requests module.
+
+<br><br>
+Using the requests module it may look something like:
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  url = "https://www.baseball-reference.com/teams/"
+  raw_html = requests.get(url).content
+    </code>
+  </pre>
+</figure>
+Then we are able to pass that raw_html to BS with the following line
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+soup = BeautifulSoup(raw_html, 'lxml')
+    </code>
+  </pre>
+</figure>
+The second argument is the default parser and is most commonly used.
+<br><br><br>
+<strong>So we have soup. Now what?</strong>
+<br><br>
+For the project, I need the headshot of every player in the MLB. In order to get that, there are 3 steps to return the headshot:
+<br>
+<ol>
+	<li>Get a list of MLB teams and their respective url extensions on baseball-reference.com</li>
+	<li>Get a list of the player's names on each team and their respective url extensions on baseball-reference</li>
+	<li>Navigate to the player's page and get the link to their headshot image</li>
+</ol>
+<br>
+Each one of these will serve as an example and will require different methods to collect the desired information.
+We will go through and solve each step
+<br><br><br>
+<strong>Getting a list of teams</strong>
+<br><br>
+If you navigate through a few of the team-pages on baseball-reference you will notice a pattern in the url.
+Each team page
+has the url: <br>
+<strong>"https://www.baseballreference.com/teams/"</strong> <br>
+with the 3-letter abbreviation for the team appended at the end.
+The 3-letter abbreviation unfortunately does not follow a pattern from team to team. For example, the 3-letter
+ abbreviation for the Boston Redsox is BOS, which is simply the first 3 letters of the home city. But the New York
+ Yankees follows a different pattern as their abbreviation is NYY. This means we will have to actually collect the
+ href urls instead of just appending the team name to the end of the url.
+<br><br>
+The team url extensions are found in the first table on the teams page. This is the table referenced earlier with the
+active franchises id tag. For each team in the table we can find the href which would be "/teams/BOS/" as an example.
+We can then append that to "www.baseball-reference.com" to get the team link "www.baseball-reference.com/teams/BOS/"
+to navigate to the team pages. The team pages contains a table for each team roster.
+<br><br>
+But in order to access these url extensions for each team, we will need to parse the raw HTML. The first step is to
+ get the "active franchises" table. We will use the soup.find() method to do this.
+<br><br>
+ <figure class='code-block'>
+   <pre>
+     <code contenteditable spellcheck="false">
+ teams_table = soup.find('table', id='teams_active')
+     </code>
+   </pre>
+ </figure>
+<br>
+Now that we have our table, we want to look at all of the rows because that is
+where the team names and url extensions are kept. Though we will run into one
+problem. Not every row contains team information.
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  rows = teams_table.find_all("tr")
+    </code>
+  </pre>
+</figure>
+<br>
+Next we will have to navigate the rows. In full disclosure this took a bit of
+trial and error to return the correct rows. In order to get the correct rows
+I used list comprehension to loop through each row of the table and return
+only the rows that contained certain string values. These are the rows
+that contain active teams, and nothing else.
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  team_row = [row for row in rows if "href=\"/teams/" and "scope=\"row\"" in str(row)]
+    </code>
+  </pre>
+</figure>
+<br>
+
+Now that we have each row, we need to get the information for the team names
+and their url extensions. The goal is to create a dictionary that has the team
+name as the key and url extension as the value. IE {'boston redsox':'/teams/BOS/'}
+. To get the data we simply iterate through each row and return a list of cells
+for each row. The team name can be retrieved using the first cells .text attribute
+and the url extension will be retrieved by using the BS.find() method to find
+the 'a' tag which is used for hyper links.
+
+The .text attribute simply returns the information that is actually shown on the webpage.
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  teams = {}
+  for team in team_row:
+      td = team.find_all("td")
+      teams[td[0].text] = td[0].find("a")['href']
+    </code>
+  </pre>
+</figure>
+<br><br><br>
+<strong>Getting a team's roster</strong>
+<br><br>
+Now that we have seen an example we will go through another one.
+In the first example, we were able to return a list of MLB teams and their
+href values. Now that we have all the team webpages, we will need to be able
+to get a team's roster. This time I will go through all the code at once
+as some of it will repeat itself from the previous example.
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  current_roster_table = soup.find('table', id='the40man')
+  rows = current_roster_table.find_all('tr')
+  player_rows = [row for row in rows if &quot;&lt;a href=&quot; in str(row)]
+  players = []
+  for player in player_rows:
+      td = player.find_all('td')
+      players.append(td[1].text)
+
+  players = [player.lower() for player in players]
+    </code>
+  </pre>
+</figure>
+<br>
+
+We will start similarly to the first example where we are pulling information out of a table.
+This time the name of the table is 'the40man' which refers to a team's 40-man roster. Again,
+we will get all of the rows from this table. This time the rows of the table correspond to
+the players on the 40-man roster. We make sure of this by only taking rows that have an href
+tag as seen in line 3. This prevents us from returning rows that store information not
+related to players.
+
+For each row, we have to parse through the cells to return the name of the player. 
+This is done in a similar fashion as in the first example.
+
+<br><br><br>
+<strong>How to get an image from HTML</strong>
+<br><br>
+Finally we have a list of the teams, and  from there we got a list of the players on that team.  We will start in a similar fashion as in the previous 2 examples, except for this time we will be looking for "img" tags instead of tables. Using the soup.find() method will return a list of 4 img tags found on the players page. The first is for the Baseball Reference icon at the top of the page, the second is the player headshot and the last 2 are for the Gracenote and Baseball Info Solutions. We only need the player's headshot image and so we will use list comprehension to find only img tags that contain the string "headshot". The 3rd line gets the url as a string so that we can download the image locally. Finally we will use urllib.request.urlretrieve to save the image in our local directory.
+<br><br>
+<figure class='code-block'>
+  <pre>
+    <code contenteditable spellcheck="false">
+  image_tags = soup.findAll('img')
+  headshot_img = str([src for src in image_tags if 'headshots' in str(src)][0])
+  headshot_url = headshot_img.split('src="')[1].split('"/>')[0]
+  urllib.request.urlretrieve(headshot_url, 'headshot.png')
+    </code>
+  </pre>
+</figure>
+<br>
+
+Every time you use Beautiful Soup you will have to do something different because every website is different. But hopefully you can follow at least somewhat of the same pattern to get that information. Using BS just takes practice so try and think of interesting data or information you can retrieve and try and get it using BS. Practice makes perfect.
+
+Here is the code in its entirety:
+
+
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock %}
