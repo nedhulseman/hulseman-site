@@ -4724,12 +4724,12 @@ input[type=submit].btn-block {
 }
 
 .navbar-dark .navbar-brand {
-    color: #fff
+    color: #379683;
 }
 
 .navbar-dark .navbar-brand:focus,
 .navbar-dark .navbar-brand:hover {
-    color: #fff
+    color: #379683
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -6870,7 +6870,7 @@ button.bg-light:hover {
 }
 
 .bg-dark {
-    background-color: #333333!important
+    background-color: #5CDB95!important
 }
 
 a.bg-dark:focus,

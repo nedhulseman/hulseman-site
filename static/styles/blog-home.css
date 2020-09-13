@@ -20,7 +20,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: white;
+  color: #05386B;
   font-size: 32;
   background-color: #333333;
   padding-left: : 140px;
@@ -52,6 +52,7 @@ body {
 }
 .main-body {
   padding-bottom: 60px;
+  padding-top: 60px;
 }
 .footer {
    position:relative;
