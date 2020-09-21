@@ -42,13 +42,16 @@ body {
   font-size: 20px;
 }
 .logo-img {
-  height:80px;
+  height:120px;
   padding-right: 40px;
 }
 .paige-container {
   position: relative;
   height: auto;
   min-height: 100% !important;
+}
+.container{
+  margin-left: 0px;
 }
 .main-body {
   padding-bottom: 60px;

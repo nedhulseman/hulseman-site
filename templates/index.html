@@ -6,7 +6,7 @@
   <div class="" id="dashboard">
     <div class="row">
       <div class="dashboard-item" id="recipes">
-        <button class="btn-dash" type="button" name="button">
+        <button class="btn-dash" type="button" name="button" onclick="window.location.href='{{url_for('recipe_search')}}'" >
           <i class='fas fa-lemon' style='font-size:48px;color:#05386B'></i><br>
           Recipes
         </button>
@@ -31,7 +31,10 @@
           <br>Bucket List</button>
       </div>
       <div class="dashboard-item" id="recipes">
-        <button class="btn-dash" type="button" name="button">Recipes</button>
+        <button class="btn-dash" type="button" name="button">
+          <i class='fas fa-dumbbell' style='font-size:48px;color:#05386B'></i>
+          <br>Exercise Goals</button>
+        </button>
       </div>
       <div class="dashboard-item" id="recipes">
         <button class="btn-dash" type="button" name="button">Recipes</button>

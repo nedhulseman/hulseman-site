@@ -1,0 +1,42 @@
+
+
+
+#recipe-search {
+  padding-top: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#recipe-table {
+  border-collapse: collapse;
+  width: 60%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#recipe-table th, #recipe-table td {
+  text-align: left;
+  padding: 12px;
+  width: 40%;
+}
+
+#recipe-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#recipe-table tr.header, #recipe-table tr:hover {
+  background-color: #f1f1f1;
+}

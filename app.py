@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 import os
+import pandas as pd
+from bs4 import BeautifulSoup
 
 
 cwd = os.getcwd()
@@ -14,9 +16,23 @@ def main():
     return render_template("index.html")
 
 
-@app.route('/Scraping-mlb-headshots-with-beautifulsoup')
-def mlb_headshots():
-    return render_template("mlb-head.html")
+@app.route('/search-recipes')
+def recipe_search():
+    recipe_df = pd.read_excel('data/recipe_list.xlsx')
+    '''
+    recipe_df = pd.DataFrame({
+        'Name': ['Alfreds Futterkiste', 'Ian An', 'Al Maddock'],
+        'Country': ['Germany', 'Sweden', 'UK']
+    })
+    '''
+    soup = BeautifulSoup(recipe_df.to_html(index=False), "html.parser")
+    soup.find('table')['id'] = 'recipe-table'
+    soup.find('tr')['class'] = 'header'
+
+    return render_template("recipe-search.html", table=soup)
+
+
+
 
 @app.route('/boarding-sim')
 def boarding_sim():
