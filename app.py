@@ -18,7 +18,7 @@ def main():
 
 @app.route('/search-recipes')
 def recipe_search():
-    recipe_df = pd.read_excel('data/recipe_list.xlsx')
+    recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
     '''
     recipe_df = pd.DataFrame({
         'Name': ['Alfreds Futterkiste', 'Ian An', 'Al Maddock'],
@@ -29,10 +29,13 @@ def recipe_search():
     soup.find('table')['id'] = 'recipe-table'
     soup.find('tr')['class'] = 'header'
 
-    return render_template("recipe-search.html", table=soup)
+    dets = "Here are ingredients... Here are instructions..."
 
+    return render_template("recipe-search.html", table=soup, dets=dets)
 
-
+@app.route('/get-ins')
+def get_ins():
+    return 'Here are ingredients...\nHere are instructions...'
 
 @app.route('/boarding-sim')
 def boarding_sim():
