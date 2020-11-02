@@ -26,6 +26,13 @@
 }
 #recipes {
 }
+.keyword-column {
+  display: none;
+}
+.food-img {
+  height: 200px;
+  width: auto;
+}
 
 .btn-dash {
   width: 200px;
