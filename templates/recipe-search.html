@@ -5,7 +5,17 @@
 <!DOCTYPE html>
 <div id="recipe-search">
   <h2>Cookbook</h2>
-  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names, ingredients, seasons, crockpot and more..." title="Type in a name">
+  <div  class="add-recipe-div" id="to-do">
+    <button class="btn-dash" id="add-recipe-btn" type="button" name="button" onclick="window.location.href='{{url_for('add_recipe')}}'">
+      <div class="">
+      <i class='far fa-align-left fa-plus-square' style='font-size:48px;color:#05386B'></i>
+      <a id="add-recipe-btn-a">Add recipes</a>
+      </div>
+    </button>
+  </div>
+
   {{ table |  safe }}
 </div>
 

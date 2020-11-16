@@ -1,5 +1,23 @@
 
+.add-recipe-div {
+  width: 60%;
+  margin: 0;
+  display: inline-block;
+}
+#add-recipe-btn {
+  width: 100%;
+  height: 60px;
+  text-align: left;
+}
+i {
+  padding-bottom: 0px;
+}
 
+#add-recipe-btn-a{
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 20px;
+}
 
 #recipe-search {
   padding-top: 40px;
@@ -14,7 +32,7 @@
   background-image: url('/css/searchicon.png');
   background-position: 10px 10px;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 60%;
   font-size: 16px;
   padding: 12px 20px 12px 40px;
   border: 1px solid #ddd;

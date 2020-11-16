@@ -16,6 +16,11 @@ def main():
     return render_template("index.html")
 
 
+@app.route('/add-recipe')
+def add_recipe():
+    return render_template("add-recipe.html")
+
+
 @app.route('/search-recipes')
 def recipe_search():
     recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
