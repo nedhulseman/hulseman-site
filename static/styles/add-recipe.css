@@ -6,7 +6,9 @@
   height: 140px;
   background-color: white;
   margin: 8px;
-
+}
+.form-row{
+  margin-left: 20px;
 }
 .main-body {
   background-color: #F0F0F0;
@@ -16,3 +18,60 @@
   color: white;
   padding-left: 10px;
 }
+
+.bootstrap-tagsinput {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: block;
+    padding: 4px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    max-width: 100%;
+    line-height: 22px;
+    cursor: text;
+    width: 100%;
+    margin-left: :20px;
+    height: 100px;
+}
+.bootstrap-tagsinput input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0 6px;
+    margin: 0;
+    width: auto;
+    max-width: inherit;
+}
+.label {
+  padding-left: 4px;
+  padding-right: 24px;
+  background-color: #5CDB95;
+  color: white;
+}
+#ingredient-tag {
+  width:80%;
+  height: 200px;
+}
+#form-tags-1{
+  height: 200px;
+}
+
+.tagsinput,.tagsinput *{box-sizing:border-box}
+.tagsinput{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;background:#fff;font-family:sans-serif;font-size:14px;line-height:20px;color:#556270;padding:5px 5px 0;border:1px solid #e6e6e6;border-radius:2px}
+.tagsinput.focus{border-color:#ccc}
+.tagsinput .tag{position:relative;background:#5CDB95;display:block;max-width:100%;word-wrap:break-word;color:#fff;padding:5px 30px 5px 5px;border-radius:2px;margin:0 5px 5px 0}
+.tagsinput .tag .tag-remove{position:absolute;background:0 0;display:block;width:30px;height:30px;top:0;right:0;cursor:pointer;text-decoration:none;text-align:center;color:#05386B;line-height:30px;padding:0;border:0}
+.tagsinput .tag .tag-remove:after,.tagsinput .tag .tag-remove:before{background:#ff6b6b;position:absolute;display:block;width:10px;height:2px;top:14px;left:10px;content:''}
+.tagsinput .tag .tag-remove:before{-webkit-transform:rotateZ(45deg);transform:rotateZ(45deg)}
+.tagsinput .tag .tag-remove:after{-webkit-transform:rotateZ(-45deg);transform:rotateZ(-45deg)}
+.tagsinput div{-webkit-box-flex:1;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.tagsinput div input{background:0 0;display:block;width:100%;font-size:14px;line-height:20px;padding:5px;border:0;margin:0 5px 5px 0}
+.tagsinput div input.error{color:#ff6b6b}
+.tagsinput div input::-ms-clear{display:none}
+.tagsinput div input::-webkit-input-placeholder{color:#ccc;opacity:1}
+.tagsinput div input:-moz-placeholder{color:#ccc;opacity:1}
+.tagsinput div input::-moz-placeholder{color:#ccc;opacity:1}
+.tagsinput div input:-ms-input-placeholder{color:#ccc;opacity:1}
