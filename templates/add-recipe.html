@@ -1,6 +1,6 @@
 {% extends "nav-template.html" %}
 {% block content %}
-<br><br><br><br><br><br>
+<br><br><br><br>
 <h2 style="padding-left: 20px;">Add Recipe</h2>
 
 <div class="form-row">
@@ -128,43 +128,40 @@
               </div>
             </div>
             <div class="form-row">
-            <div id="ingredient-tag"  class="form container">
-              <h4 class="form-header">Add Ingredients</h3>
-                <input id="form-tags-1" name="tags-1" type="text" value="jQuery,Script,Net">
+              <div id="instructions"  class="form container">
+                <h4 class="form-header">Add Instructions</h3>
+                  <div class="form-group">
+                    <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="9" style="resize:none;"></textarea>
+                  </div>
+                </div>
               </div>
-            </div>
-            <br><br><br><br><br>
+              <div class="form-row">
+                <div id="ingredient-tag"  class="form container">
+                  <h4 class="form-header">Add Ingredients</h3>
+                    <input id="form-tags-1" name="tags-1" type="text" onChange="addIngredientsTable()" >
+                    <table id="ingredients-table">
+                      <thead>
+                        <tr>
+                          <th>Ingredient</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
 
-            <script type="text/javascript">
-              function getRecipeSRC() {
-                if (document.getElementById("url-src-recipe").checked == true) {
-                  document.getElementById("url-recipe-input").style.display ='flex';
-                  document.getElementById("upload-recipe-input").style.display ='none';
-                }
-                else {
-                  document.getElementById("url-recipe-input").style.display ='none';
-                  document.getElementById("upload-recipe-input").style.display ='flex';
-                }
-              }
-              getRecipeSRC();
-              function getImgSRC() {
-                if (document.getElementById("url-src-img").checked == true) {
-                  document.getElementById("url-img-input").style.display ='flex';
-                  document.getElementById("upload-img-input").style.display ='none';
-                }
-                else {
-                  document.getElementById("url-img-input").style.display ='none';
-                  document.getElementById("upload-img-input").style.display ='flex';
-                }
-              }
-              getImgSRC();
-            </script>
-            <script>
-              $(".custom-file-input").on("change", function() {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-              });
-            </script>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <br><br><br><br><br>
 
 
-            {% endblock %}
+                <script>
+                  $(".custom-file-input").on("change", function() {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                  });
+                </script>
+
+
+
+                {% endblock %}
