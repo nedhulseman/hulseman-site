@@ -153,13 +153,23 @@
                   </div>
                 </div>
                 <br><br><br><br><br>
-
-
+                <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
                 <script>
                   $(".custom-file-input").on("change", function() {
                     var fileName = $(this).val().split("\\").pop();
                     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
                   });
+
+                </script>
+                <script type="text/javascript">
+                  function addClickAction() {
+                    $('.dropdown-menu a').click(function(){
+                      console.log('called?');
+                      console.log($(this).parent().attr('id'));
+                      console.log(  $($(this).parent().siblings('button') ));
+                      $($(this).parent().siblings('button') ).text($(this).text());
+                    });
+                  }
                 </script>
 
 
