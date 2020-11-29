@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -50,6 +51,55 @@ def recipe_search():
 
     return render_template("recipe-search.html", table=soup, dets=dets)
 
+
+
+
+@app.route('/registerRecipe/', methods=["POST", "GET"])
+def register_recipe():
+    print(request.form.get('recipe-name'))
+    print(request.form.get('meal-type-breakfast'))
+    print(request.form.get('meal-type-lunch'))
+    print(request.form.get('text-instructions'))
+    print(request.form.get('ingredient-tags'))
+    print(request.data)
+    return render_template("add-recipe.html")
+    '''
+        if request.method == "POST" and form.validate():
+            username  = form.username.data
+            email = form.email.data
+            password = sha256_crypt.encrypt((str(form.password.data)))
+            c, conn = connection()
+
+            x = c.execute("SELECT * FROM users WHERE username = (%s)",
+                          (thwart(username)))
+
+            if int(x) > 0:
+                flash("That username is already taken, please choose another")
+                return render_template('register.html', form=form)
+
+            else:
+                c.execute("INSERT INTO users (username, password, email, tracking) VALUES (%s, %s, %s, %s)",
+                          (thwart(username), thwart(password), thwart(email), thwart("/introduction-to-python-programming/")))
+
+                conn.commit()
+                flash("Thanks for registering!")
+                c.close()
+                conn.close()
+                gc.collect()
+
+                session['logged_in'] = True
+                session['username'] = username
+
+                return redirect(url_for('dashboard'))
+
+        return render_template("register.html", form=form)
+
+    except Exception as e:
+        return(str(e))
+
+
+
+'''
 
 
 

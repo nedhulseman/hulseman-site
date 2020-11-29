@@ -74,6 +74,9 @@
   border: 1px solid #05386B;
   width: 300px;
 }
+.dropdown-item {
+  cursor: pointer;
+}
 
 
 .tagsinput,.tagsinput *{box-sizing:border-box}

@@ -3,155 +3,159 @@
 <br><br><br><br>
 <h2 style="padding-left: 20px;">Add Recipe</h2>
 
-<div class="form-row">
-  <div class="form">
-    <h4 class="form-header">Recipe Name</h3>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Recipe Name</span>
-        </div>
-        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-      </div>
-    </div>
+<!--  <form method=post action="/register/"> -->
+<form class="" action="/registerRecipe/" method="post">
+  <div class="form-row">
     <div class="form">
-      <h4 class="form-header">Meal</h3>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Breakfast">
-          <label class="form-check-label" for="inlineCheckbox1">Breakfast</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Lunch">
-          <label class="form-check-label" for="inlineCheckbox2">Lunch</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dinner">
-          <label class="form-check-label" for="inlineCheckbox3">Dinner</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Side">
-          <label class="form-check-label" for="inlineCheckbox3">Side</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Drink">
-          <label class="form-check-label" for="inlineCheckbox3">Drink</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dessert">
-          <label class="form-check-label" for="inlineCheckbox3">Dessert</label>
+      <h4 class="form-header">Recipe Name</h3>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Recipe Name</span>
+          </div>
+          <input name="recipe-name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
         </div>
       </div>
-    </div>
-
-
-    <div class="form-row">
       <div class="form">
-        <h4 class="form-header">Season</h3>
+        <h4 class="form-header">Meal</h3>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Spring">
-            <label class="form-check-label" for="inlineCheckbox1">Spring</label>
+            <input name="meal-type-breakfast" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Breakfast">
+            <label class="form-check-label" for="inlineCheckbox1">Breakfast</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Summer">
-            <label class="form-check-label" for="inlineCheckbox2">Summer</label>
+            <input name="meal-type-lunch" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Lunch">
+            <label class="form-check-label" for="inlineCheckbox2">Lunch</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Fall">
-            <label class="form-check-label" for="inlineCheckbox3">Fall</label>
+            <input name="meal-type-dinner" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dinner">
+            <label class="form-check-label" for="inlineCheckbox3">Dinner</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Winter">
-            <label class="form-check-label" for="inlineCheckbox3">Winter</label>
+            <input name="meal-type-drink" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Side">
+            <label class="form-check-label" for="inlineCheckbox3">Side</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input name="meal-type-drink" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Drink">
+            <label class="form-check-label" for="inlineCheckbox3">Drink</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input name="meal-type-dessert" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dessert">
+            <label class="form-check-label" for="inlineCheckbox3">Dessert</label>
           </div>
         </div>
+      </div>
+
+
+      <div class="form-row">
         <div class="form">
-          <h4 class="form-header">Crockpot Meal</h3>
+          <h4 class="form-header">Season</h3>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Yes">
-              <label class="form-check-label" for="inlineCheckbox1">Yes</label>
+              <input name="meal-season-spring" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Spring">
+              <label class="form-check-label" for="inlineCheckbox1">Spring</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Yes">
-              <label class="form-check-label" for="inlineCheckbox2">Yes</label>
+              <input name="meal-season-summer" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Summer">
+              <label class="form-check-label" for="inlineCheckbox2">Summer</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input name="meal-season-fall" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Fall">
+              <label class="form-check-label" for="inlineCheckbox3">Fall</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input name="meal-season-winter" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Winter">
+              <label class="form-check-label" for="inlineCheckbox3">Winter</label>
             </div>
           </div>
-        </div>
-        <div class="form-row">
           <div class="form">
-            <h4 class="form-header">Source of Recipe</h3>
-              <div class="form-check-inline">
-                <label class="form-check-label">
-                  <input id="url-src-recipe" onchange="getRecipeSRC()" type="radio" class="form-check-input" name="optradio" checked>URL Web Address
-                </label>
+            <h4 class="form-header">Crockpot Meal</h3>
+              <div class="form-check form-check-inline">
+                <input name="meal-crockpot-yes" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Yes">
+                <label class="form-check-label" for="inlineCheckbox1">Yes</label>
               </div>
-              <div class="form-check-inline">
-                <label class="form-check-label">
-                  <input id="upload-src-recipe" onchange="getRecipeSRC()" type="radio" class="form-check-input" name="optradio">Upload PDF
-                </label>
-              </div>
-              <div id="url-recipe-input" class="input-group mb-3" >
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Recipe URL</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-              </div>
-              <div id="upload-recipe-input" class="input-group-prepend">
-                <div class="custom-file mb-3">
-                  <input type="file" class="custom-file-input" id="customFile" name="filename">
-                  <label class="custom-file-label" for="customFile">Choose file</label>
-                </div>
+              <div class="form-check form-check-inline">
+                <input name="meal-crockpot-no" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="No">
+                <label class="form-check-label" for="inlineCheckbox2">No</label>
               </div>
             </div>
+          </div>
+          <div class="form-row">
             <div class="form">
-              <h4 class="form-header">Upload Image</h3>
+              <h4 class="form-header">Source of Recipe</h3>
                 <div class="form-check-inline">
                   <label class="form-check-label">
-                    <input id="url-src-img" onchange="getImgSRC()" type="radio" class="form-check-input" name="optradio-img" checked>URL Web Address
+                    <input name="meal-src-url-ind" id="url-src-recipe" onchange="getRecipeSRC()" type="radio" class="form-check-input" checked>URL Web Address
                   </label>
                 </div>
                 <div class="form-check-inline">
                   <label class="form-check-label">
-                    <input id="upload-src-recipe" onchange="getImgSRC()" type="radio" class="form-check-input" name="optradio-img">Upload PDF
+                    <input name="meal-src-upload-ind" id="upload-src-recipe" onchange="getRecipeSRC()" type="radio" class="form-check-input" >Upload PDF
                   </label>
                 </div>
-                <div id="url-img-input" class="input-group mb-3" >
+                <div id="url-recipe-input" class="input-group mb-3" >
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Recipe URL</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  <input name="meal-src-url" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                 </div>
-                <div id="upload-img-input" class="input-group-prepend">
+                <div id="upload-recipe-input" class="input-group-prepend">
                   <div class="custom-file mb-3">
-                    <input type="file" class="custom-file-input" id="customFile" name="filename">
+                    <input name="meal-src-upload" type="file" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="form-row">
-              <div id="instructions"  class="form container">
-                <h4 class="form-header">Add Instructions</h3>
-                  <div class="form-group">
-                    <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="9" style="resize:none;"></textarea>
+              <div class="form">
+                <h4 class="form-header">Upload Image</h3>
+                  <div class="form-check-inline">
+                    <label class="form-check-label">
+                      <input name="meal-img-url-ind" id="url-src-img" onchange="getImgSRC()" type="radio" class="form-check-input" " checked>URL Web Address
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label">
+                      <input name="meal-img-upload-ind" id="upload-src-recipe" onchange="getImgSRC()" type="radio" class="form-check-input" >Upload PDF
+                    </label>
+                  </div>
+                  <div id="url-img-input" class="input-group mb-3" >
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Recipe URL</span>
+                    </div>
+                    <input name="meal-img-url" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
+                  <div id="upload-img-input" class="input-group-prepend">
+                    <div class="custom-file mb-3">
+                      <input name="meal-img-upload" type="file" class="custom-file-input" id="customFile" >
+                      <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-row">
-                <div id="ingredient-tag"  class="form container">
-                  <h4 class="form-header">Add Ingredients</h3>
-                    <input id="form-tags-1" name="tags-1" type="text" onChange="addIngredientsTable()" >
-                    <table id="ingredients-table">
-                      <thead>
-                        <tr>
-                          <th>Ingredient</th>
-                          <th>Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                      </tbody>
-                    </table>
+                <div id="instructions"  class="form container">
+                  <h4 class="form-header">Add Instructions</h3>
+                    <div class="form-group">
+                      <textarea name="text-instructions" class="form-control rounded-0" id="exampleFormControlTextarea1" rows="9" style="resize:none;"></textarea>
+                    </div>
                   </div>
                 </div>
+                <div class="form-row">
+                  <div id="ingredient-tag"  class="form container">
+                    <h4 class="form-header">Add Ingredients</h3>
+                      <input  id="form-tags-1" name="ingredient-tags" type="text" onChange="addIngredientsTable()" >
+                      <table id="ingredients-table">
+                        <thead>
+                          <tr>
+                            <th>Ingredient</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <p><input type="submit" action="/registerRecipe/" value="Add Recipe"></p>
+                </form>
                 <br><br><br><br><br>
                 <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
                 <script>

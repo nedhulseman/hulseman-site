@@ -42,15 +42,19 @@
 
 function getDrpdwn(id_name){
   ingred_measure_drpdwn = `<div class="btn-group">
-            <button type="button" id=`+id_name+'-drpdwn'+` onClick="addClickAction()" class="drpdwn btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Action
+            <button name="ing-amt-type-`+id_name+`" type="button" id=`+id_name+'-drpdwn'+` onClick="addClickAction()" class="drpdwn btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              TEASPOONS
             </button>
             <div id=`+id_name+'-drpdwn_div'+` class="dropdown-menu">
-              <a class="dropdown-item" >Action</a>
-              <a class="dropdown-item">Another action</a>
-              <a class="dropdown-item" >Something else here</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" >Separated link</a>
+              <a class="dropdown-item" >TEASPOONS</a>
+              <a class="dropdown-item">TABLESPOONS</a>
+              <a class="dropdown-item" >CUPS</a>
+              <a class="dropdown-item" >OUNCES</a>
+              <a class="dropdown-item" >PINTS</a>
+              <a class="dropdown-item">QUARTS</a>
+              <a class="dropdown-item" >GRAMS</a>
+              <a class="dropdown-item" >POUNDS</a>
+              <a class="dropdown-item" >GALLONS</a>
             </div>
           </div>`;
   return ingred_measure_drpdwn;
@@ -111,8 +115,10 @@ function addIngredientsTable() {
       row.setAttribute('id', new_items[i]);
       row.setAttribute('class', 'ingredient_tags');
       var ing = row.insertCell(0);
-      var drp = row.insertCell(1);
+      var amt = row.insertCell(1);
+      var drp = row.insertCell(2);
       ing.innerHTML = new_items[i];
+      amt.innerHTML = '<textarea name="ing-amt-'+new_items[i]+' class="ingredient-amt" rounded-0" id="exampleFormControlTextarea1" rows="1" style="resize:none; width:80%;"></textarea>';
       drp.innerHTML = getDrpdwn(new_items[i]);
     };
     // Remove items from tables
