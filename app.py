@@ -3,7 +3,8 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
-
+import pandas.io.sql as psql
+import sqlalchemy
 
 cwd = os.getcwd()
 
@@ -24,7 +25,11 @@ def add_recipe():
 
 @app.route('/search-recipes')
 def recipe_search():
-    recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
+    engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:dustPed15@localhost:3306/recipes', echo=True)
+    query = "select * from recipe"
+    recipe_df = psql.read_sql(query, con=engine)
+
+    #recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
     recipe_df = recipe_df.fillna("")
     recipe_df['keywords'] = recipe_df['food_name'].astype(str) +recipe_df['season'].astype(str)  +recipe_df['food_type'].astype(str)+recipe_df['crockpot'].astype(str) +recipe_df['source'].astype(str)
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
