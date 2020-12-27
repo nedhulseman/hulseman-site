@@ -69,6 +69,8 @@ def register_recipe():
     recipe_df = psql.read_sql(query, con=engine)
     meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
 
+
+    img_source = request.form.get('url_image_input')
     img_save_fp = './static/images/'+meal_id+'.jpg'
     urllib.request.urlretrieve(url_for_img, img_save_fp)
 
