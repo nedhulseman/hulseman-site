@@ -1,0 +1,7 @@
+meal_id,food_name,season,food_type,crockpot,source,source_type,img_source,ingredients,directions
+10000,Chicken Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,,
+10001,Corn Bread,"Fall, Winter",Side,False,The Happy Fat Family,cookbook,static/example.jpg,,
+10002,Pumpkin Spice Latte,Fall,Drink,False,Pokey,family,static/example.jpg,,
+10003,Pineapple Chicken,Summer,Dinner,False,www.google.com,internet,static/example.jpg,,
+10004,White Chicken Chile Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,,
+10005,Roasted Lamb,All,Dinner,True,www.google.com,internet,static/example.jpg,,
