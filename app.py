@@ -5,13 +5,14 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
-import sqlalchemy
+#import sqlalchemy
 
 cwd = os.getcwd()
-pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
-engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
+#pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
+#engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
-recipe_df = psql.read_sql(query, con=engine)
+#recipe_df = psql.read_sql(query, con=engine)
+recipe_df = pd.read_csv('./data/sql_df.csv')
 
 
 app = Flask(__name__)
@@ -32,8 +33,9 @@ def add_recipe():
 @app.route('/search-recipes')
 def recipe_search():
     query = "select * from recipe"
-    recipe_df = psql.read_sql(query, con=engine)
+    #recipe_df = psql.read_sql(query, con=engine)
     #recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
+    recipe_df = psql.read_csv('./data/sql_df.csv')
     recipe_df = recipe_df.fillna("")
     recipe_df['keywords'] = recipe_df['food_name'].astype(str) +recipe_df['season'].astype(str)  +recipe_df['food_type'].astype(str)+recipe_df['crockpot'].astype(str) +recipe_df['source'].astype(str)
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
@@ -62,25 +64,31 @@ def recipe_search():
 
 
 
-
 @app.route('/registerRecipe/', methods=["POST", "GET"])
 def register_recipe():
     query = "select * from recipe"
-    recipe_df = psql.read_sql(query, con=engine)
+    #recipe_df = psql.read_sql(query, con=engine)
+
+    '''
+    recipe_df = psql.read_csv('./data/sql_df.csv')
     meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
 
-    img_save_fp = './static/images/'+meal_id+'.jpg'
+    img_source = './static/images/'+meal_id+'.jpg'
+    url_for_img = request.form.get('meal-img-url')
     urllib.request.urlretrieve(url_for_img, img_save_fp)
-
-
-    print(request.form.get('recipe-name'))
-    print(request.form.get('meal-type-breakfast'))
-    print(request.form.get('meal-type-lunch'))
-    print(request.form.get('text-instructions'))
-    print(request.form.get('ingredient-tags'))
-    print(request.data)
-    return render_template("add-recipe.html")
     '''
+    food_name = request.form.get('recipe-name')
+    meal_type = request.form.getlist('meal-type')
+    meal_season = request.form.getlist('meal-season')
+    meal_crockpot = request.form.getlist('meal-crockpot')
+    meal_src = request.form.get('meal-src-url')
+    text_instructions = request.form.get('text-instructions')
+    ing_tags = request.form.get('ingredient-tags')
+    print(text_instructions)
+    print(meal_type)
+    return render_template("add-recipe.html", instructions=text_instructions)
+    '''
+
         if request.method == "POST" and form.validate():
             username  = form.username.data
             email = form.email.data
@@ -111,12 +119,14 @@ def register_recipe():
 
         return render_template("register.html", form=form)
 
+
     except Exception as e:
         return(str(e))
+    '''
 
 
 
-'''
+
 
 
 

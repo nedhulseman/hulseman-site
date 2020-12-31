@@ -1,10 +1,14 @@
 {% extends "nav-template.html" %}
 {% block content %}
 <br><br><br><br>
+<div id="warning" class="alert alert-warning alert-dismissible form-messages">
+  <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> -->
+
+</div>
 <h2 style="padding-left: 20px;">Add Recipe</h2>
 
 <!--  <form method=post action="/register/"> -->
-<form class="" action="/registerRecipe/" method="post">
+<form class="" action="/registerRecipe/" method="post" onsubmit = "return(validate());">
   <div class="form-row">
     <div class="form">
       <h4 class="form-header">Recipe Name</h3>
@@ -12,33 +16,33 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default">Recipe Name</span>
           </div>
-          <input name="recipe-name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+          <input id="recipe-name" name="recipe-name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
         </div>
       </div>
       <div class="form">
         <h4 class="form-header">Meal</h3>
           <div class="form-check form-check-inline">
-            <input name="meal-type-breakfast" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Breakfast">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Breakfast">
             <label class="form-check-label" for="inlineCheckbox1">Breakfast</label>
           </div>
           <div class="form-check form-check-inline">
-            <input name="meal-type-lunch" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Lunch">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Lunch">
             <label class="form-check-label" for="inlineCheckbox2">Lunch</label>
           </div>
           <div class="form-check form-check-inline">
-            <input name="meal-type-dinner" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dinner">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dinner">
             <label class="form-check-label" for="inlineCheckbox3">Dinner</label>
           </div>
           <div class="form-check form-check-inline">
-            <input name="meal-type-drink" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Side">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Side">
             <label class="form-check-label" for="inlineCheckbox3">Side</label>
           </div>
           <div class="form-check form-check-inline">
-            <input name="meal-type-drink" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Drink">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Drink">
             <label class="form-check-label" for="inlineCheckbox3">Drink</label>
           </div>
           <div class="form-check form-check-inline">
-            <input name="meal-type-dessert" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dessert">
+            <input name="meal-type" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Dessert">
             <label class="form-check-label" for="inlineCheckbox3">Dessert</label>
           </div>
         </div>
@@ -49,30 +53,30 @@
         <div class="form">
           <h4 class="form-header">Season</h3>
             <div class="form-check form-check-inline">
-              <input name="meal-season-spring" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Spring">
+              <input name="meal-season" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Spring">
               <label class="form-check-label" for="inlineCheckbox1">Spring</label>
             </div>
             <div class="form-check form-check-inline">
-              <input name="meal-season-summer" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Summer">
+              <input name="meal-season" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Summer">
               <label class="form-check-label" for="inlineCheckbox2">Summer</label>
             </div>
             <div class="form-check form-check-inline">
-              <input name="meal-season-fall" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Fall">
+              <input name="meal-season" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Fall">
               <label class="form-check-label" for="inlineCheckbox3">Fall</label>
             </div>
             <div class="form-check form-check-inline">
-              <input name="meal-season-winter" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Winter">
+              <input name="meal-season" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Winter">
               <label class="form-check-label" for="inlineCheckbox3">Winter</label>
             </div>
           </div>
           <div class="form">
             <h4 class="form-header">Crockpot Meal</h3>
               <div class="form-check form-check-inline">
-                <input name="meal-crockpot-yes" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Yes">
+                <input name="meal-crockpot" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Yes">
                 <label class="form-check-label" for="inlineCheckbox1">Yes</label>
               </div>
               <div class="form-check form-check-inline">
-                <input name="meal-crockpot-no" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="No">
+                <input name="meal-crockpot" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="No">
                 <label class="form-check-label" for="inlineCheckbox2">No</label>
               </div>
             </div>
@@ -133,7 +137,7 @@
                 <div id="instructions"  class="form container">
                   <h4 class="form-header">Add Instructions</h3>
                     <div class="form-group">
-                      <textarea name="text-instructions" class="form-control rounded-0" id="exampleFormControlTextarea1" rows="9" style="resize:none;"></textarea>
+                      <textarea name="text-instructions" class="form-control rounded-0" id="exampleFormControlTextarea1" rows="9" style="resize:none;" ></textarea>
                     </div>
                   </div>
                 </div>
@@ -174,6 +178,87 @@
                       $($(this).parent().siblings('button') ).text($(this).text());
                     });
                   }
+                  function validate() {
+                    var rec_name = document.getElementsByName('recipe-name')[0] ;
+                    if (rec_name.value.length< 1 || rec_name.value.length>150){
+                      console.log(rec_name.value.length);
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please enter a recipe name that is greater than 1 character and less than 150.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+
+                    var meal_types = document.getElementsByName("meal-type");
+                    checks = 0;
+                    for (var i = 0, len = meal_types.length; i < len; i++) {
+                         if (meal_types[i].checked) {
+                             checks += 1;
+                         }
+                    }
+                    if (checks == 0) {
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please select atleast one meal type.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var meal_season = document.getElementsByName("meal-season");
+                    checks = 0;
+                    for (var i = 0, len = meal_season.length; i < len; i++) {
+                         if (meal_season[i].checked) {
+                             checks += 1;
+                         }
+                    }
+                    if (checks == 0) {
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please select at least one meal season.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var crockpot = document.getElementsByName("meal-crockpot");
+                    checks = 0;
+                    for (var i = 0, len = crockpot.length; i < len; i++) {
+                         if (crockpot[i].checked) {
+                             checks += 1;
+                         }
+                    }
+                    if (checks == 0) {
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please reference if meal is for crockpots, not for crockpots or both.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var img = document.getElementsByName('meal-img-url')[0] ;
+                    if (img.value.length< 1 || img.value.length>300){
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please enter an image source that is greater than 1 character and less than 300.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var instructions = document.getElementsByName('text-instructions')[0] ;
+                    if (instructions.value.length< 1 || instructions.value.length>1000){
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please enter instructions that is greater than 1 character and less than 1000.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var ingredients = document.getElementById('form-tags-1_tagsinput').childElementCount;
+                    if (ingredients< 2 ){
+                      var warning = document.getElementById("warning");
+                      warning.innerHTML = 'Please enter at least 1 ingredient.';
+                      warning.style.visibility = "visible";
+                      return false;
+                    }
+                    var ingredient_amounts = document.getElementsByClassName('ingredient-amt');
+                    for (var i=0; i<ingredient_amounts.length; i++){
+                      if (ingredient_amounts[i].value.length == 0){
+                        var warning = document.getElementById("warning");
+                        warning.innerHTML = 'Please enter an amount for all ingredients.';
+                        warning.style.visibility = "visible";
+                        return false;
+                      }
+                    }
+                    return true;
+                  };
                 </script>
 
 

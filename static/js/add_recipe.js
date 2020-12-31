@@ -118,7 +118,7 @@ function addIngredientsTable() {
       var amt = row.insertCell(1);
       var drp = row.insertCell(2);
       ing.innerHTML = new_items[i];
-      amt.innerHTML = '<textarea name="ing-amt-'+new_items[i]+' class="ingredient-amt" rounded-0" id="exampleFormControlTextarea1" rows="1" style="resize:none; width:80%;"></textarea>';
+      amt.innerHTML = '<textarea name="ing-amt-'+new_items[i]+'" class="ingredient-amt" rounded-0" id="exampleFormControlTextarea1" rows="1" style="resize:none; width:80%;"></textarea>';
       drp.innerHTML = getDrpdwn(new_items[i]);
     };
     // Remove items from tables
