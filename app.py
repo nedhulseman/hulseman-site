@@ -5,7 +5,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
-#import sqlalchemy
+import sqlalchemy
 
 cwd = os.getcwd()
 pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
@@ -135,9 +135,9 @@ def register_recipe():
             }
             ingredients_form = ingredients_form.append(row, ignore_index=True)
 
-        ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append')
-        new_ingredients.to_sql('ingredients', con=engine, if_exists='append')
-        new_meal_df.to_sql('recipe', con=engine, if_exists='append')
+        ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append', index=False)
+        new_ingredients.to_sql('ingredients', con=engine, if_exists='append', index=False)
+        new_meal_df.to_sql('recipe', con=engine, if_exists='append', index=False)
 
         #recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
         #recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
