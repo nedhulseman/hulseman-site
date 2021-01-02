@@ -1,7 +1,19 @@
-meal_id,food_name,season,food_type,crockpot,source,source_type,img_source,ingredients,directions
-10000,Chicken Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,,
-10001,Corn Bread,"Fall, Winter",Side,False,The Happy Fat Family,cookbook,static/example.jpg,,
-10002,Pumpkin Spice Latte,Fall,Drink,False,Pokey,family,static/example.jpg,,
-10003,Pineapple Chicken,Summer,Dinner,False,www.google.com,internet,static/example.jpg,,
-10004,White Chicken Chile Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,,
-10005,Roasted Lamb,All,Dinner,True,www.google.com,internet,static/example.jpg,,
+meal_id,food_name,season,food_type,crockpot,source,source_type,img_source,directions,ingredients
+10000,Chicken Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,"1. boil soup
+2. cook chicken
+3. Yayyy!",
+10001,Corn Bread,"Fall, Winter",Side,False,The Happy Fat Family,cookbook,static/example.jpg,"1. buy corn
+2. buy bread
+3. smash both together",
+10002,Pumpkin Spice Latte,Fall,Drink,False,Pokey,family,static/example.jpg,"1. get in car
+2. go to starbucks",
+10003,Pineapple Chicken,Summer,Dinner,False,www.google.com,internet,static/example.jpg,"1. find something better to cook
+2. like anything",
+10004,White Chicken Chile Soup,Winter,Dinner,True,www.google.com,internet,static/example.jpg,"1. Yummmmmmmm
+2. yumâ€¦ like actually",
+10005,Roasted Lamb,All,Dinner,True,www.google.com,internet,static/example.jpg,"1. Find sheep
+2. eat sheep",
+10006,test adding,fall,breakfast,yes,,,./static/images/10006.jpg,"1. this is a test...
+2. Syd is pretty cool!
+3. Ned is lucky to have her!",
+10007,syd poop,"spring,summer,fall,winter",dinner,no,,,./static/images/10007.jpg,sdfsdfds,

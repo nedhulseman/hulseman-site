@@ -64,7 +64,7 @@ onRowClick("recipe-table", function (row){
       details_row.parentNode.removeChild(details_row);
     };
 
-    var value = row.getElementsByTagName("td")[0].innerHTML;
+    var value = row.getElementsByTagName("td")[1].innerHTML;
     var row_num = row.closest('tr').rowIndex;
     //document.getElementById('click-response').innerHTML = value + " clicked!";
     console.log("value>>", value);
@@ -78,7 +78,7 @@ onRowClick("recipe-table", function (row){
       row.id = rowid;
       var cell1 = row.insertCell(0);
       cell1.colSpan = "100";
-      cell1.innerHTML = "Showing details for " + value;
+      cell1.innerHTML =  value;
     };
 });
 

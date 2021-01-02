@@ -1,1 +1,17 @@
 ingredient_id,ingredient_name,ingredient_amount,ingredient_amount_denomination,meal_id
+10001,chicken,1.0,POUND,10000
+10001,broth,16.0,OUNCES,10000
+10002,corn,1.0,GRAM,10001
+10003,bread,10.0,POUND,10001
+10004,pumpkin,1.0,POUND,10002
+10005,latte,8.0,OUNCES,10002
+10001,chicken,0.5,POUND,10003
+10006,pineapple,1.0,POUND,10003
+10001,chicken,2.0,POUND,10004
+10007,beans,32.0,OUNCES,10004
+10008,lamb,0.5,POUND,Roasted Lamb
+10009,spices,1.0,TEASPOON,Roasted Lamb
+10010,poop,1.0,GALLONS,10006
+10011,soup,1.0,QUARTS,10006
+10000,chicken,1.0,TEASPOONS,10006
+10000,chicken,232,TEASPOONS,10007

@@ -34,33 +34,39 @@ def add_recipe():
 def recipe_search():
     query = "select * from recipe"
     #recipe_df = psql.read_sql(query, con=engine)
-    #recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
-    recipe_df = pd.read_csv('./data/sql_df.csv')
+    recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
+    recipe_df['meal_id'] = recipe_df['meal_id'].astype(str)
+    recipe_df['directions'] = recipe_df['directions'].apply(lambda x: "<br />".join(x.split("\n")))
+
+    query = "select * from recipe_ingredients"
+    #recipe_ingredients_df = psql.read_sql(query, con=engine)
+    recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
+    recipe_ingredients_df['meal_id'] = recipe_ingredients_df['meal_id'].astype(str)
+    recipe_ingredients_df['full_amt'] = recipe_ingredients_df['ingredient_amount'].astype(str) +' '+ recipe_ingredients_df['ingredient_amount_denomination'] +' of '+ recipe_ingredients_df['ingredient_name']
+    recipe_ingredients_df['full_ingredients'] = recipe_ingredients_df.groupby(['meal_id'])['full_amt'].transform(lambda x : '<br>'.join(x))
+    ingredients_str = recipe_ingredients_df[['meal_id', 'full_ingredients']].drop_duplicates()
+    recipe_df = pd.merge(recipe_df, ingredients_str, how='left', on='meal_id')
+    recipe_df['details'] = '<strong>Ingredients</strong><br>'+recipe_df['full_ingredients'] + '<br><br><strong>Directions</strong><br>'+ recipe_df['directions']
+    print(recipe_df['directions'])
     recipe_df = recipe_df.fillna("")
     recipe_df['keywords'] = recipe_df['food_name'].astype(str) +recipe_df['season'].astype(str)  +recipe_df['food_type'].astype(str)+recipe_df['crockpot'].astype(str) +recipe_df['source'].astype(str)
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
 
-    keep_cols = ['keywords','img_source', 'food_name', 'source']
+    keep_cols = ['keywords', 'details', 'img_source', 'food_name', 'source']
     soup = BeautifulSoup(recipe_df[keep_cols].to_html(index=False, escape=False), "html.parser")
     soup.find('table')['id'] = 'recipe-table'
     rows = soup.find_all('tr')
     rows[0]['class'] = 'header'
 
     rows[0].find_all('th')[0]['class'] = 'keyword-column'
-    for i in range(recipe_df.shape[0]):#enumerate(recipe_df['meal_id']):
+    rows[0].find_all('th')[1]['class'] = 'details-column'
+    for i in range(recipe_df.shape[0]):
         rows[i+1]['id'] = recipe_df['meal_id'].iloc[i]
         rows[i+1].find_all('td')[0]['class'] = 'keyword-column'
+        rows[i+1].find_all('td')[1]['class'] = 'details-column'
         image = soup.new_tag('td')
 
-    #new_tag = soup.new_tag("Your Tag") #add even more tags as needed
-    #new_tag.append("Your Text")
-    # insert the new tag after the last tag using insert_after
-    #the_last_tag_i_want_to_insert_after.insert_after(new_tag)
-
-
-    dets = "Here are ingredients... Here are instructions..."
-
-    return render_template("recipe-search.html", table=soup, dets=dets)
+    return render_template("recipe-search.html", table=soup)
 
 
 
@@ -69,7 +75,7 @@ def register_recipe():
     if request.method == "POST":
         query = "select * from recipe"
         #recipe_df = psql.read_sql(query, con=engine)
-        recipe_df = pd.read_csv('./data/recipe.csv')
+        recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
         query = "select * from ingredients"
         #ingredients_df = psql.read_sql(query, con=engine)
         ingredients_df = pd.read_csv('./data/ingredients.csv')
@@ -133,9 +139,9 @@ def register_recipe():
         #new_ingredients.to_sql('ingredients', con=engine, if_exists='append')
         #new_meal_df.to_sql('recipe', con=engine, if_exists='append')
 
-        ingredients_form.to_csv('./data/recipe_ingredients2.csv',index=False)
-        new_meal_df.to_csv('./data/recipe2.csv', index=False)
-        new_ingredients.to_csv('./data/ingredients2.csv', index=False)
+        recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
+        recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
+        ingredients_df.to_csv('./data/ingredients.csv', index=False)
 
 
         return redirect(url_for('recipe_search'))

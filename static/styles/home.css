@@ -29,6 +29,9 @@
 .keyword-column {
   display: none;
 }
+.details-column {
+  display: none;
+}
 .food-img {
   height: 200px;
   width: auto;
