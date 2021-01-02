@@ -8,11 +8,11 @@ import pandas.io.sql as psql
 #import sqlalchemy
 
 cwd = os.getcwd()
-#pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
-#engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
+pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
+engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
-#recipe_df = psql.read_sql(query, con=engine)
-recipe_df = pd.read_csv('./data/sql_df.csv')
+recipe_df = psql.read_sql(query, con=engine)
+#recipe_df = pd.read_csv('./data/sql_df.csv')
 
 
 app = Flask(__name__)
@@ -33,14 +33,14 @@ def add_recipe():
 @app.route('/search-recipes')
 def recipe_search():
     query = "select * from recipe"
-    #recipe_df = psql.read_sql(query, con=engine)
-    recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
+    recipe_df = psql.read_sql(query, con=engine)
+    #recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
     recipe_df['meal_id'] = recipe_df['meal_id'].astype(str)
     recipe_df['directions'] = recipe_df['directions'].apply(lambda x: "<br />".join(x.split("\n")))
 
     query = "select * from recipe_ingredients"
-    #recipe_ingredients_df = psql.read_sql(query, con=engine)
-    recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
+    recipe_ingredients_df = psql.read_sql(query, con=engine)
+    #recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
     recipe_ingredients_df['meal_id'] = recipe_ingredients_df['meal_id'].astype(str)
     recipe_ingredients_df['full_amt'] = recipe_ingredients_df['ingredient_amount'].astype(str) +' '+ recipe_ingredients_df['ingredient_amount_denomination'] +' of '+ recipe_ingredients_df['ingredient_name']
     recipe_ingredients_df['full_ingredients'] = recipe_ingredients_df.groupby(['meal_id'])['full_amt'].transform(lambda x : '<br>'.join(x))
@@ -74,16 +74,16 @@ def recipe_search():
 def register_recipe():
     if request.method == "POST":
         query = "select * from recipe"
-        #recipe_df = psql.read_sql(query, con=engine)
-        recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
-        query = "select * from ingredients"
-        #ingredients_df = psql.read_sql(query, con=engine)
-        ingredients_df = pd.read_csv('./data/ingredients.csv')
+        recipe_df = psql.read_sql(query, con=engine)
+        #recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
 
+        query = "select * from ingredients"
+        ingredients_df = psql.read_sql(query, con=engine)
+        #ingredients_df = pd.read_csv('./data/ingredients.csv')
 
         query = "select * from recipe_ingredients"
-        #recipe_ingredients_df = psql.read_sql(query, con=engine)
-        recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
+        recipe_ingredients_df = psql.read_sql(query, con=engine)
+        #recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
 
         meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
 
@@ -135,13 +135,13 @@ def register_recipe():
             }
             ingredients_form = ingredients_form.append(row, ignore_index=True)
 
-        #ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append')
-        #new_ingredients.to_sql('ingredients', con=engine, if_exists='append')
-        #new_meal_df.to_sql('recipe', con=engine, if_exists='append')
+        ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append')
+        new_ingredients.to_sql('ingredients', con=engine, if_exists='append')
+        new_meal_df.to_sql('recipe', con=engine, if_exists='append')
 
-        recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
-        recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
-        ingredients_df.to_csv('./data/ingredients.csv', index=False)
+        #recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
+        #recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
+        #ingredients_df.to_csv('./data/ingredients.csv', index=False)
 
 
         return redirect(url_for('recipe_search'))
