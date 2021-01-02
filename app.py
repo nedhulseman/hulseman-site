@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import os
 import pandas as pd
@@ -35,7 +35,7 @@ def recipe_search():
     query = "select * from recipe"
     #recipe_df = psql.read_sql(query, con=engine)
     #recipe_df = pd.read_excel('data/recipe_list.xlsx', sheet_name='Cookbook')
-    recipe_df = psql.read_csv('./data/sql_df.csv')
+    recipe_df = pd.read_csv('./data/sql_df.csv')
     recipe_df = recipe_df.fillna("")
     recipe_df['keywords'] = recipe_df['food_name'].astype(str) +recipe_df['season'].astype(str)  +recipe_df['food_type'].astype(str)+recipe_df['crockpot'].astype(str) +recipe_df['source'].astype(str)
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
@@ -66,66 +66,79 @@ def recipe_search():
 
 @app.route('/registerRecipe/', methods=["POST", "GET"])
 def register_recipe():
-    query = "select * from recipe"
-    #recipe_df = psql.read_sql(query, con=engine)
-
-    '''
-    recipe_df = psql.read_csv('./data/sql_df.csv')
-    meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
-
-    img_source = './static/images/'+meal_id+'.jpg'
-    url_for_img = request.form.get('meal-img-url')
-    urllib.request.urlretrieve(url_for_img, img_save_fp)
-    '''
-    food_name = request.form.get('recipe-name')
-    meal_type = request.form.getlist('meal-type')
-    meal_season = request.form.getlist('meal-season')
-    meal_crockpot = request.form.getlist('meal-crockpot')
-    meal_src = request.form.get('meal-src-url')
-    text_instructions = request.form.get('text-instructions')
-    ing_tags = request.form.get('ingredient-tags')
-    print(text_instructions)
-    print(meal_type)
-    return render_template("add-recipe.html", instructions=text_instructions)
-    '''
-
-        if request.method == "POST" and form.validate():
-            username  = form.username.data
-            email = form.email.data
-            password = sha256_crypt.encrypt((str(form.password.data)))
-            c, conn = connection()
-
-            x = c.execute("SELECT * FROM users WHERE username = (%s)",
-                          (thwart(username)))
-
-            if int(x) > 0:
-                flash("That username is already taken, please choose another")
-                return render_template('register.html', form=form)
-
-            else:
-                c.execute("INSERT INTO users (username, password, email, tracking) VALUES (%s, %s, %s, %s)",
-                          (thwart(username), thwart(password), thwart(email), thwart("/introduction-to-python-programming/")))
-
-                conn.commit()
-                flash("Thanks for registering!")
-                c.close()
-                conn.close()
-                gc.collect()
-
-                session['logged_in'] = True
-                session['username'] = username
-
-                return redirect(url_for('dashboard'))
-
-        return render_template("register.html", form=form)
+    if request.method == "POST":
+        query = "select * from recipe"
+        #recipe_df = psql.read_sql(query, con=engine)
+        recipe_df = pd.read_csv('./data/recipe.csv')
+        query = "select * from ingredients"
+        #ingredients_df = psql.read_sql(query, con=engine)
+        ingredients_df = pd.read_csv('./data/ingredients.csv')
 
 
-    except Exception as e:
-        return(str(e))
-    '''
+        query = "select * from recipe_ingredients"
+        #recipe_ingredients_df = psql.read_sql(query, con=engine)
+        recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
+
+        meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
+
+        img_source = './static/images/'+meal_id+'.jpg'
+        url_for_img = request.form.get('meal-img-url')
+        urllib.request.urlretrieve(url_for_img, img_source)
+
+        food_name = request.form.get('recipe-name')
+        meal_type = request.form.getlist('meal-type')
+        meal_season = request.form.getlist('meal-season')
+        meal_crockpot = request.form.getlist('meal-crockpot')
+        if len(meal_crockpot) > 1:
+            meal_crockpot = 'both'
+        #meal_src = request.form.get('meal-src-url')
+        text_instructions = request.form.get('text-instructions')
+        ing_tags = request.form.get('ingredient-tags')
+        new_row = {
+            'meal_id' : [meal_id],
+            'food_name': [food_name],
+            'season': [','.join(meal_season).lower()],
+            'food_type': [','.join(meal_type).lower()],
+            'crockpot': [','.join(meal_crockpot).lower()],
+            'source': [''],
+            'source_type': [''],
+            'img_source': [img_source],
+            'ingredients': [''],
+            'directions': [text_instructions]
+        }
+        new_meal_df = pd.DataFrame(new_row)
 
 
+        ingredients_form = pd.DataFrame(columns=['ingredient_id', 'ingredient_name', 'ingredient_amount', 'ingredient_amount_denomination', 'meal_id'])
+        new_ingredients = pd.DataFrame()
+        for ing in ing_tags.split(','):
+            denomination = request.form.get("ing-amt-type-"+ing)
+            print(denomination)
+            amt = request.form.get("ing-amt-"+ing)
+            if ing not in ingredients_df['ingredient_name'].unique():
+                ingredient_new_id = str(ingredients_df['ingredient_id'].astype(int).max() + 1)
+                row = {'ingredient_name':ing.lower(), 'ingredient_id':ingredient_new_id}
+                ingredients_df = ingredients_df.append(row, ignore_index=True)
+                new_ingredients = new_ingredients.append(row, ignore_index=True)
+            row = {
+                'ingredient_id'     : ingredients_df.loc[ingredients_df['ingredient_name']== ing.lower(), 'ingredient_id'].iloc[0],
+                'ingredient_name'   : ing.lower(),
+                'ingredient_amount' : amt.lower(),
+                'ingredient_amount_denomination': denomination,
+                'meal_id'           : meal_id
+            }
+            ingredients_form = ingredients_form.append(row, ignore_index=True)
 
+        #ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append')
+        #new_ingredients.to_sql('ingredients', con=engine, if_exists='append')
+        #new_meal_df.to_sql('recipe', con=engine, if_exists='append')
+
+        ingredients_form.to_csv('./data/recipe_ingredients2.csv',index=False)
+        new_meal_df.to_csv('./data/recipe2.csv', index=False)
+        new_ingredients.to_csv('./data/ingredients2.csv', index=False)
+
+
+        return redirect(url_for('recipe_search'))
 
 
 

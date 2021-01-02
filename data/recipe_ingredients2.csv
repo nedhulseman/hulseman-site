@@ -1,0 +1,4 @@
+ingredient_id,ingredient_name,ingredient_amount,ingredient_amount_denomination,meal_id
+10001,chicken,3,GRAMS,10006
+10002,potatoes,2,OUNCES,10006
+10003,garlic,1,TEASPOONS,10006

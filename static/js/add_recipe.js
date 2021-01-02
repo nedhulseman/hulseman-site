@@ -39,8 +39,22 @@
     }
 }
 
+function getDrpdwn(id_name) {
+  ingred_measure_drpdwn = `<select id=`+id_name+'-drpdwn_div'+` name="ing-amt-type-`+id_name+`" class="drpdwn" >
+                            <option value="TEASPOONS">TEASPOONS</option>
+                            <option value="TABLESPOONS">TABLESPOONS</option>
+                            <option value="CUPS">CUPS</option>
+                            <option value="OUNCES">OUNCES</option>
+                            <option value="PINTS">PINTS</option>
+                            <option value="QUARTS">QUARTS</option>
+                            <option value="GRAMS">GRAMS</option>
+                            <option value="POUNDS">POUNDS</option>
+                            <option value="GALLONS">GALLONS</option>
+                          </select>`;
+  return ingred_measure_drpdwn;
+}
 
-function getDrpdwn(id_name){
+function DEPRECATED_getDrpdwn(id_name){
   ingred_measure_drpdwn = `<div class="btn-group">
             <button name="ing-amt-type-`+id_name+`" type="button" id=`+id_name+'-drpdwn'+` onClick="addClickAction()" class="drpdwn btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               TEASPOONS

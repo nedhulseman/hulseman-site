@@ -158,7 +158,7 @@
                       </table>
                     </div>
                   </div>
-                  <p><input type="submit" action="/registerRecipe/" value="Add Recipe"></p>
+                  <p><input href="#" type="submit" action="/registerRecipe/" value="Add Recipe"></p>
                 </form>
                 <br><br><br><br><br>
                 <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
@@ -241,12 +241,21 @@
                       warning.style.visibility = "visible";
                       return false;
                     }
-                    var ingredients = document.getElementById('form-tags-1_tagsinput').childElementCount;
-                    if (ingredients< 2 ){
+                    var ingredients = document.getElementById('form-tags-1_tagsinput');
+                    if (ingredients.childElementCount < 2 ){
                       var warning = document.getElementById("warning");
                       warning.innerHTML = 'Please enter at least 1 ingredient.';
                       warning.style.visibility = "visible";
                       return false;
+                    }
+                    ings_tags = ingredients.getElementsByTagName('span');
+                    for (var i=0; i< ings_tags.length; i++){
+                      if ( ings_tags[i].innerText.includes(',') ) {
+                        var warning = document.getElementById("warning");
+                        warning.innerHTML = 'Please do not include a comma in ingredient name.';
+                        warning.style.visibility = "visible";
+                        return false;
+                      }
                     }
                     var ingredient_amounts = document.getElementsByClassName('ingredient-amt');
                     for (var i=0; i<ingredient_amounts.length; i++){
