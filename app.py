@@ -5,14 +5,14 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
-import sqlalchemy
+#import sqlalchemy
 
 cwd = os.getcwd()
-pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
-engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
+#pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
+#engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
-recipe_df = psql.read_sql(query, con=engine)
-#recipe_df = pd.read_csv('./data/sql_df.csv')
+#recipe_df = psql.read_sql(query, con=engine)
+recipe_df = pd.read_csv('./data/sql_df.csv')
 
 
 app = Flask(__name__)
@@ -33,14 +33,14 @@ def add_recipe():
 @app.route('/search-recipes')
 def recipe_search():
     query = "select * from recipe"
-    recipe_df = psql.read_sql(query, con=engine)
-    #recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
+    #recipe_df = psql.read_sql(query, con=engine)
+    recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
     recipe_df['meal_id'] = recipe_df['meal_id'].astype(str)
     recipe_df['directions'] = recipe_df['directions'].apply(lambda x: "<br />".join(x.split("\n")))
 
     query = "select * from recipe_ingredients"
-    recipe_ingredients_df = psql.read_sql(query, con=engine)
-    #recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
+    #recipe_ingredients_df = psql.read_sql(query, con=engine)
+    recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
     recipe_ingredients_df['meal_id'] = recipe_ingredients_df['meal_id'].astype(str)
     recipe_ingredients_df['full_amt'] = recipe_ingredients_df['ingredient_amount'].astype(str) +' '+ recipe_ingredients_df['ingredient_amount_denomination'] +' of '+ recipe_ingredients_df['ingredient_name']
     recipe_ingredients_df['full_ingredients'] = recipe_ingredients_df.groupby(['meal_id'])['full_amt'].transform(lambda x : '<br>'.join(x))
@@ -89,24 +89,30 @@ def register_recipe():
 
         img_source = './static/images/'+meal_id+'.jpg'
         url_for_img = request.form.get('meal-img-url')
-        urllib.request.urlretrieve(url_for_img, img_source)
+        if url_for_img.lower() == 'placeholder':
+            img_source = './static/images/placeholder.jpg'
+        else:
+            urllib.request.urlretrieve(url_for_img, img_source)
 
         food_name = request.form.get('recipe-name')
         meal_type = request.form.getlist('meal-type')
         meal_season = request.form.getlist('meal-season')
         meal_crockpot = request.form.getlist('meal-crockpot')
-        if len(meal_crockpot) > 1:
-            meal_crockpot = 'both'
+        if meal_crockpot.lower().contains('yes'):
+            meal_crockpot = 'crockpot'
+        else:
+            meal_crockpot = 'no'
         #meal_src = request.form.get('meal-src-url')
         text_instructions = request.form.get('text-instructions')
         ing_tags = request.form.get('ingredient-tags')
+        source = request.form.get('submitter-source')
         new_row = {
             'meal_id' : [meal_id],
             'food_name': [food_name],
             'season': [','.join(meal_season).lower()],
             'food_type': [','.join(meal_type).lower()],
             'crockpot': [','.join(meal_crockpot).lower()],
-            'source': [''],
+            'source': [source],
             'source_type': [''],
             'img_source': [img_source],
             'ingredients': [''],

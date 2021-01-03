@@ -1,4 +1,4 @@
-
+/*
   function getRecipeSRC() {
     if (document.getElementById("url-src-recipe").checked == true) {
       document.getElementById("url-recipe-input").style.display ='flex';
@@ -9,7 +9,7 @@
       document.getElementById("upload-recipe-input").style.display ='flex';
     }
   }
-  getRecipeSRC();
+  //getRecipeSRC();
   function getImgSRC() {
     if (document.getElementById("url-src-img").checked == true) {
       document.getElementById("url-img-input").style.display ='flex';
@@ -20,7 +20,8 @@
       document.getElementById("upload-img-input").style.display ='flex';
     }
   }
-  getImgSRC();
+  //getImgSRC();
+  */
 
 
   if (document.readyState == 'complete') {
@@ -43,13 +44,15 @@ function getDrpdwn(id_name) {
   ingred_measure_drpdwn = `<select id=`+id_name+'-drpdwn_div'+` name="ing-amt-type-`+id_name+`" class="drpdwn" >
                             <option value="TEASPOONS">TEASPOONS</option>
                             <option value="TABLESPOONS">TABLESPOONS</option>
-                            <option value="CUPS">CUPS</option>
+                            <option value="GRAMS">GRAMS</option>
                             <option value="OUNCES">OUNCES</option>
+                            <option value="CUPS">CUPS</option>
                             <option value="PINTS">PINTS</option>
                             <option value="QUARTS">QUARTS</option>
-                            <option value="GRAMS">GRAMS</option>
                             <option value="POUNDS">POUNDS</option>
                             <option value="GALLONS">GALLONS</option>
+                            <option value="PIECES">PIECES</option>
+                            <option value="CANS">CANS</option>
                           </select>`;
   return ingred_measure_drpdwn;
 }

@@ -84,26 +84,13 @@
           <div class="form-row">
             <div class="form">
               <h4 class="form-header">Submitter Name</h3>
-              <div id="url-recipe-input" class="input-group mb-3" >
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Submitter Name</span>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Submitter Name</span>
+                  </div>
+                  <input  name="submitter-name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                 </div>
-                <input  name="submitter-source" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-              </div>
-            </div>
-            <div class="form">
-              <h4 class="form-header">URL for Image</h3>
-              <div id="url-recipe-input" class="input-group mb-3" >
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">URL for Image</span>
-                </div>
-                <input placeholder="Use 'placeholder' if no image..." name="meal-src-url" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-              </div>
-            </div>
-          </div>
-          <!--
-          <div class="form-row">
-            <div class="form">
+              <!--
               <h4 class="form-header">Source of Recipe</h3>
                 <div class="form-check-inline">
                   <label class="form-check-label">
@@ -126,10 +113,17 @@
                     <input name="meal-src-upload" type="file" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="form">
-                <h4 class="form-header">Upload Image</h3>
+                <h4 class="form-header">Image URL</h3>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Image URL</span>
+                    </div>
+                    <input name="meal-img-url" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
+                <!-- <h4 class="form-header">Upload Image</h3>
                   <div class="form-check-inline">
                     <label class="form-check-label">
                       <input name="meal-img-url-ind" id="url-src-img" onchange="getImgSRC()" type="radio" class="form-check-input" " checked>URL Web Address
@@ -151,9 +145,9 @@
                       <input name="meal-img-upload" type="file" class="custom-file-input" id="customFile" >
                       <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                  </div>
+                  </div>  -->
                 </div>
-              </div> -->
+              </div>
               <div class="form-row">
                 <div id="instructions"  class="form container">
                   <h4 class="form-header">Add Instructions</h3>
@@ -212,9 +206,9 @@
                     var meal_types = document.getElementsByName("meal-type");
                     checks = 0;
                     for (var i = 0, len = meal_types.length; i < len; i++) {
-                      if (meal_types[i].checked) {
-                        checks += 1;
-                      }
+                         if (meal_types[i].checked) {
+                             checks += 1;
+                         }
                     }
                     if (checks == 0) {
                       var warning = document.getElementById("warning");
@@ -225,9 +219,9 @@
                     var meal_season = document.getElementsByName("meal-season");
                     checks = 0;
                     for (var i = 0, len = meal_season.length; i < len; i++) {
-                      if (meal_season[i].checked) {
-                        checks += 1;
-                      }
+                         if (meal_season[i].checked) {
+                             checks += 1;
+                         }
                     }
                     if (checks == 0) {
                       var warning = document.getElementById("warning");
@@ -238,9 +232,9 @@
                     var crockpot = document.getElementsByName("meal-crockpot");
                     checks = 0;
                     for (var i = 0, len = crockpot.length; i < len; i++) {
-                      if (crockpot[i].checked) {
-                        checks += 1;
-                      }
+                         if (crockpot[i].checked) {
+                             checks += 1;
+                         }
                     }
                     if (checks == 0) {
                       var warning = document.getElementById("warning");
