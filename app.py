@@ -8,8 +8,8 @@ import pandas.io.sql as psql
 import sqlalchemy
 
 cwd = os.getcwd()
-pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
-engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:'+pw+'@localhost:3306/recipes', echo=True)
+#pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
+engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:dustPed15@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
 recipe_df = psql.read_sql(query, con=engine)
 #recipe_df = pd.read_csv('./data/sql_df.csv')
@@ -87,18 +87,20 @@ def register_recipe():
 
         meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
 
-        img_source = './static/images/'+meal_id+'.jpg'
+        #img_source = os.path.join(app.root_path, '/static/images', meal_id+'.jpg')
+        img_source = '/var/www/hulseman-site/static/images/'+meal_id+'.jpg'
         url_for_img = request.form.get('meal-img-url')
         if url_for_img.lower() == 'placeholder':
-            img_source = './static/images/placeholder.jpg'
+            img_source = '/static/images/placeholder.jpg'
         else:
             urllib.request.urlretrieve(url_for_img, img_source)
+            img_source = './static/images'+meal_id+'.jpg'
 
         food_name = request.form.get('recipe-name')
         meal_type = request.form.getlist('meal-type')
         meal_season = request.form.getlist('meal-season')
         meal_crockpot = request.form.getlist('meal-crockpot')
-        if meal_crockpot.lower().contains('yes'):
+        if 'yes' in ",".join(meal_crockpot).lower():
             meal_crockpot = 'crockpot'
         else:
             meal_crockpot = 'no'
@@ -115,7 +117,7 @@ def register_recipe():
             'source': [source],
             'source_type': [''],
             'img_source': [img_source],
-            'ingredients': [''],
+            #'ingredients': [''],
             'directions': [text_instructions]
         }
         new_meal_df = pd.DataFrame(new_row)
