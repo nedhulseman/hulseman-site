@@ -256,9 +256,9 @@
                       return false;
                     }
                     var instructions = document.getElementsByName('text-instructions')[0] ;
-                    if (instructions.value.length< 1 || instructions.value.length>1000){
+                    if (instructions.value.length< 1 || instructions.value.length>100000){
                       var warning = document.getElementById("warning");
-                      warning.innerHTML = 'Please enter instructions that is greater than 1 character and less than 1000.';
+                      warning.innerHTML = 'Please enter instructions that is greater than 1 character and less than 100000.';
                       warning.style.visibility = "visible";
                       return false;
                     }
