@@ -8,7 +8,7 @@
 <h2 style="padding-left: 20px;">Add Recipe</h2>
 
 <!--  <form method=post action="/register/"> -->
-<form class="" action="/registerRecipe/" method="post" onsubmit = "return(validate());">
+<form id="upload-form" class="" action="/registerRecipe/" method="post" onsubmit = "return(submitted());">
   <div class="form-row">
     <div class="form">
       <h4 class="form-header">Recipe Name</h3>
@@ -81,8 +81,8 @@
               </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form">
+          <div id="form-row-vertical" class="form-row">
+            <div id="form-high" class="form">
               <h4 class="form-header">Submitter Name</h3>
               <div id="url-recipe-input" class="input-group mb-3" >
                 <div class="input-group-prepend">
@@ -91,8 +91,35 @@
                 <input  name="submitter-source" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
               </div>
             </div>
-            <div class="form">
-              <h4 class="form-header">URL for Image</h3>
+            <div id="form-high" class="form">
+              <h4 class="form-header">Image of Recipe</h3>
+                Select files OR drag them into the box below.
+                <input id="file-picker" type="file" name="file" accept="image/*"><p>
+
+                <div id="dropbox">
+                    <!--<img class="thumbnail" id="theImg" src=''/>'-->
+                    Drag and Drop Files Here
+                </div><p>
+
+                <fieldset id="progress" style="display: none">
+                    <legend>Files Progress</legend>
+
+                    <div class="progress-trough">
+                        <div id="progress-bar" class="progress-bar">0%</div>
+                    </div>
+                </fieldset><p>
+              <!--
+              <div id="upload-img-input" class="input-group-prepend">
+                <div class="custom-file mb-3">
+                  <input name="meal-img-upload" type="file" class="custom-file-input" id="customFile" >
+                  <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+              </div>
+            -->
+            </div>
+          </div>
+
+              <!--
               <div id="url-recipe-input" class="input-group mb-3" >
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">URL for Image</span>
@@ -100,7 +127,7 @@
                 <input placeholder="Use 'placeholder' if no image..." name="meal-img-url" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
               </div>
             </div>
-          </div>
+          </div> -->
           <!--
           <div class="form-row">
             <div class="form">
@@ -179,10 +206,13 @@
                       </table>
                     </div>
                   </div>
-                  <p><input href="#" type="submit" action="/registerRecipe/" value="Add Recipe"></p>
+                  <button type="button" id="validate-fields"  href="#" onclick="validate()"> Submit Recipe</button>
+                  <p><input style="visibility:hidden;" id="upload-button" href="#" type="submit" action="/registerRecipe/"></p>
                 </form>
                 <br><br><br><br><br>
                 <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+                <script src="{{url_for('static', filename='js/jquery-2.1.1.min.js')}}"></script>
+                <script src="{{url_for('static', filename='js/uploadr.js')}}"></script>
                 <script>
                   $(".custom-file-input").on("change", function() {
                     var fileName = $(this).val().split("\\").pop();
@@ -248,10 +278,10 @@
                       warning.style.visibility = "visible";
                       return false;
                     }
-                    var img = document.getElementsByName('meal-img-url')[0] ;
+                    var img = document.getElementsByName('submitter-source')[0] ;
                     if (img.value.length< 1 || img.value.length>300){
                       var warning = document.getElementById("warning");
-                      warning.innerHTML = 'Please enter an image source that is greater than 1 character and less than 300.';
+                      warning.innerHTML = 'Please enter an submitter name that is greater than 1 character and less than 300.';
                       warning.style.visibility = "visible";
                       return false;
                     }
@@ -287,8 +317,17 @@
                         return false;
                       }
                     }
+                    //e.preventDefault();
+                    //doUpload();
+                    //callSubmitter();
+                    $( "#upload-button" ).trigger( "click" );
+                    console.log('clicked!');
                     return true;
                   };
+                  function submitted(){
+                    console.log('submission made....');
+                    return true;
+                  }
                 </script>
 
 

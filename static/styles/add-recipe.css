@@ -17,6 +17,19 @@
   background-color: white;
   margin: 8px;
 }
+#form-high {
+  height: 300px;
+}
+.thumbnail {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100px;
+}
+
+.thumbnail:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
 .form-row{
   margin-left: 20px;
 }
@@ -105,3 +118,25 @@
 .tagsinput div input:-moz-placeholder{color:#ccc;opacity:1}
 .tagsinput div input::-moz-placeholder{color:#ccc;opacity:1}
 .tagsinput div input:-ms-input-placeholder{color:#ccc;opacity:1}
+
+#dropbox {
+    border: 2px dashed #000000;
+    padding: 20px;
+}
+
+#dropbox.active {
+    border: 4px dashed #FF0000;
+}
+
+.progress-trough {
+    border: 1px solid #000000;
+    height: 24px;
+    width: 100%;
+    position: relative;
+}
+
+.progress-bar {
+    width: 50%;
+    height: 100%;
+    background-color: #0099FF;
+}

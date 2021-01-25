@@ -5,13 +5,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
-import sqlalchemy
+#import sqlalchemy
 
 cwd = os.getcwd()
 #pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
 engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:dustPed15@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
-recipe_df = psql.read_sql(query, con=engine)
 #recipe_df = pd.read_csv('./data/sql_df.csv')
 
 
@@ -47,7 +46,6 @@ def recipe_search():
     ingredients_str = recipe_ingredients_df[['meal_id', 'full_ingredients']].drop_duplicates()
     recipe_df = pd.merge(recipe_df, ingredients_str, how='left', on='meal_id')
     recipe_df['details'] = '<strong>Ingredients</strong><br>'+recipe_df['full_ingredients'] + '<br><br><strong>Directions</strong><br>'+ recipe_df['directions']
-    print(recipe_df['directions'])
     recipe_df = recipe_df.fillna("")
     recipe_df['keywords'] = recipe_df['food_name'].astype(str) +recipe_df['season'].astype(str)  +recipe_df['food_type'].astype(str)+recipe_df['crockpot'].astype(str) +recipe_df['source'].astype(str)
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
@@ -73,6 +71,7 @@ def recipe_search():
 @app.route('/registerRecipe/', methods=["POST", "GET"])
 def register_recipe():
     if request.method == "POST":
+
         query = "select * from recipe"
         recipe_df = psql.read_sql(query, con=engine)
         #recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
@@ -87,27 +86,40 @@ def register_recipe():
 
         meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
 
-        #img_source = os.path.join(app.root_path, '/static/images', meal_id+'.jpg')
-        img_source = '/var/www/hulseman-site/static/images/'+meal_id+'.jpg'
+
+        img = request.files.get("file")
+        #filename = upload.filename.rsplit("/")[0]
+        #destination = "/".join([target, filename])
+
+        img_source = './static/images/'+meal_id+'.jpg'
+        print('\n----')
+        print("Accept incoming file:", img.filename)
+        print("Save it to:", img_source)
+        print('----')
+        img.save(img_source)
+        '''
         url_for_img = request.form.get('meal-img-url')
         if url_for_img.lower() == 'placeholder':
-            img_source = '/static/images/placeholder.jpg'
+            img_source = './static/images/placeholder.jpg'
         else:
             urllib.request.urlretrieve(url_for_img, img_source)
-            img_source = './static/images'+meal_id+'.jpg'
-
+        '''
         food_name = request.form.get('recipe-name')
         meal_type = request.form.getlist('meal-type')
         meal_season = request.form.getlist('meal-season')
         meal_crockpot = request.form.getlist('meal-crockpot')
-        if 'yes' in ",".join(meal_crockpot).lower():
+        if 'yes' in ", ".join(meal_crockpot).lower():
             meal_crockpot = 'crockpot'
         else:
             meal_crockpot = 'no'
         #meal_src = request.form.get('meal-src-url')
         text_instructions = request.form.get('text-instructions')
+        print('\n\n\n-------')
+        print(text_instructions)
         ing_tags = request.form.get('ingredient-tags')
         source = request.form.get('submitter-source')
+        print(ing_tags)
+        print(source)
         new_row = {
             'meal_id' : [meal_id],
             'food_name': [food_name],
@@ -117,7 +129,7 @@ def register_recipe():
             'source': [source],
             'source_type': [''],
             'img_source': [img_source],
-            #'ingredients': [''],
+            'ingredients': [''],
             'directions': [text_instructions]
         }
         new_meal_df = pd.DataFrame(new_row)
@@ -127,7 +139,6 @@ def register_recipe():
         new_ingredients = pd.DataFrame()
         for ing in ing_tags.split(','):
             denomination = request.form.get("ing-amt-type-"+ing)
-            print(denomination)
             amt = request.form.get("ing-amt-"+ing)
             if ing not in ingredients_df['ingredient_name'].unique():
                 ingredient_new_id = str(ingredients_df['ingredient_id'].astype(int).max() + 1)
@@ -146,7 +157,8 @@ def register_recipe():
         ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append', index=False)
         new_ingredients.to_sql('ingredients', con=engine, if_exists='append', index=False)
         new_meal_df.to_sql('recipe', con=engine, if_exists='append', index=False)
-
+        print(recipe_df)
+        print(new_meal_df)
         #recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
         #recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
         #ingredients_df.to_csv('./data/ingredients.csv', index=False)
