@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * HTML5 Multiple File Uploader Demo                                          *
  ******************************************************************************/
@@ -45,10 +44,6 @@ function doUpload() {
 
     // Collect the form data.
     fd = collectFormData();
-    for(var pair of fd.entries()) {
-          console.log(pair[0]+ ', '+ pair[1]);
-     }
-
 
     // Attach the files.
     for (var i = 0, ie = PENDING_FILES.length; i < ie; i++) {
@@ -56,13 +51,10 @@ function doUpload() {
         fd.append("file", PENDING_FILES[i]);
     }
 
-    for(var pair of fd.entries()) {
-       console.log(pair[0]+ ', '+ pair[1]);
-    }
-
     // Inform the back-end that we're doing this over ajax.
     fd.append("__ajax", "true");
-    
+    console.log("I GOT CALLED!");
+    console.log('fd: ', fd.get('ing-amt-dsf'));
     var xhr = $.ajax({
         xhr: function() {
             var xhrobj = $.ajaxSettings.xhr();
@@ -92,31 +84,17 @@ function doUpload() {
             
           console.log('ready to jsonify'); 
 	   $progressBar.css({"width": "100%"});
-	  /*
             data = JSON.parse(data);
-	   
+	   /*
 
             // How'd it go?
             if (data.status === "error") {
                 // Uh-oh.
                 window.alert(data.msg);
-                $("#upload-form :input").removeAttr("disabled");
-                return;
-            }
-            else {
-                // Ok! Get the UUID.
-                var uuid = data.msg;
-                window.location = NEXT_URL + uuid;
-            }*/
-            
+          
             console.log("I am guessing it doesnt make it here?");
             window.location ='/search-recipes';
         },
-	error: function(requestObject, error, errorThrown, data){
-		console.log("ERROR THROWN");
-		console.log(errorThrown);
-		console.log(error);
-	},
     });
 }
 
@@ -150,12 +128,8 @@ function collectFormData() {
         }
 
         fd.append(name, value);
-        console.log("incremental fd: ", Object.keys(fd));
-        console.log('a', fd.get('a'))
+        console.log("incremental fd: ", fd);
     });
-    for(var pair of fd.entries()) {
-  	 console.log('entry: ', pair[0]+ ', '+ pair[1]);
-     }
     console.log('final fd', fd);
     return fd;
 }

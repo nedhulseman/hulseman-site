@@ -1,20 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for
+
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
-#import sqlalchemy
+import sqlalchemy
+import sys
+#sys.stdout = open('stdout_python.log', 'a')
+
 
 cwd = os.getcwd()
 #pw = open("./configs/hulseman_site_config.txt", "r").read().strip()
 engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:dustPed15@localhost:3306/recipes', echo=True)
 query = "select * from recipe"
 #recipe_df = pd.read_csv('./data/sql_df.csv')
-
+print('engine created...')
 
 app = Flask(__name__)
+
+app.config['img_dir'] = 'static/images'
+
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///coffee.db'
 #app.secret_key = 'java'
 #db = SQLAlchemy(app)
@@ -70,8 +77,9 @@ def recipe_search():
 
 @app.route('/registerRecipe/', methods=["POST", "GET"])
 def register_recipe():
+    print('RegisterRecipe is engaged...')
     if request.method == "POST":
-
+        print('RegisterRecipe handling post...')
         query = "select * from recipe"
         recipe_df = psql.read_sql(query, con=engine)
         #recipe_df = pd.read_csv('./data/recipe.csv', engine='python')
@@ -85,7 +93,7 @@ def register_recipe():
         #recipe_ingredients_df = pd.read_csv('./data/recipe_ingredients.csv')
 
         meal_id = str(recipe_df['meal_id'].astype(int).max() + 1)
-
+        print('meal_id: ' + str(meal_id))
 
         img = request.files.get("file")
         #filename = upload.filename.rsplit("/")[0]
@@ -96,7 +104,7 @@ def register_recipe():
         print("Accept incoming file:", img.filename)
         print("Save it to:", img_source)
         print('----')
-        img.save(img_source)
+        img.save(os.path.join(app.root_path, 'static/images', meal_id +'.jpg'))
         '''
         url_for_img = request.form.get('meal-img-url')
         if url_for_img.lower() == 'placeholder':
@@ -129,11 +137,12 @@ def register_recipe():
             'source': [source],
             'source_type': [''],
             'img_source': [img_source],
-            'ingredients': [''],
+            #'ingredients': [''],
             'directions': [text_instructions]
         }
         new_meal_df = pd.DataFrame(new_row)
-
+        print('new meal df')
+        print(new_meal_df)
 
         ingredients_form = pd.DataFrame(columns=['ingredient_id', 'ingredient_name', 'ingredient_amount', 'ingredient_amount_denomination', 'meal_id'])
         new_ingredients = pd.DataFrame()
@@ -163,6 +172,7 @@ def register_recipe():
         #recipe_df.append(new_meal_df, ignore_index=True).to_csv('./data/recipe.csv', index=False)
         #ingredients_df.to_csv('./data/ingredients.csv', index=False)
 
+        print('made it through')
 
         return redirect(url_for('recipe_search'))
 
