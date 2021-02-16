@@ -42,7 +42,8 @@
 
 function getDrpdwn(id_name) {
   ingred_measure_drpdwn = `<select id=`+id_name+'-drpdwn_div'+` name="ing-amt-type-`+id_name+`" class="drpdwn" >
-                            <option value="TEASPOONS">TEASPOONS</option>
+                            <option value="pinch">PINCH</option>
+			    <option value="TEASPOONS">TEASPOONS</option>
                             <option value="TABLESPOONS">TABLESPOONS</option>
                             <option value="GRAMS">GRAMS</option>
                             <option value="OUNCES">OUNCES</option>
@@ -52,6 +53,7 @@ function getDrpdwn(id_name) {
                             <option value="POUNDS">POUNDS</option>
                             <option value="GALLONS">GALLONS</option>
                             <option value="PIECES">PIECES</option>
+			    <option value="UNITS">UNITS</option>
                             <option value="CANS">CANS</option>
                           </select>`;
   return ingred_measure_drpdwn;

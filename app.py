@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import pandas.io.sql as psql
 import sqlalchemy
+from sqlalchemy.types import INTEGER, TEXT
 import sys
 #sys.stdout = open('stdout_python.log', 'a')
 
@@ -17,6 +18,29 @@ engine = sqlalchemy.create_engine('mysql+mysqlconnector://root:dustPed15@localho
 query = "select * from recipe"
 #recipe_df = pd.read_csv('./data/sql_df.csv')
 print('engine created...')
+recipe_df_types = {
+    'meal_id'     : INTEGER,
+    'food_name'   : TEXT,
+    'season'      : TEXT,
+    'food_type'   : TEXT,
+    'crockpot'    : TEXT,
+    'source'      : TEXT,
+    'source_type' : TEXT,
+    'img_source'  : TEXT,
+    'img_source'  : TEXT,
+    'directions'  : TEXT
+}
+ingredients_df_types = {
+    'ingredient_id'                  : INTEGER,
+    'ingredient_name'                : TEXT,
+}
+recipe_ingredients_df_types = {
+    'ingredient_id'                  : INTEGER,
+    'ingredient_name'                : TEXT,
+    'ingredient_amount_denomination' : TEXT,
+    'meal_id'                        : INTEGER,
+}
+
 
 app = Flask(__name__)
 
@@ -163,9 +187,9 @@ def register_recipe():
             }
             ingredients_form = ingredients_form.append(row, ignore_index=True)
 
-        ingredients_form.to_sql('recipe_ingredients', con=engine, if_exists='append', index=False)
-        new_ingredients.to_sql('ingredients', con=engine, if_exists='append', index=False)
-        new_meal_df.to_sql('recipe', con=engine, if_exists='append', index=False)
+        ingredients_form.to_sql('recipe_ingredients', con=engine, dtype=recipe_ingredients_df_types,  if_exists='append', index=False)
+        new_ingredients.to_sql('ingredients', con=engine, dtype=ingredients_df_types, if_exists='append', index=False)
+        new_meal_df.to_sql('recipe', con=engine, dtype=recipe_df_types, if_exists='append', index=False)
         print(recipe_df)
         print(new_meal_df)
         #recipe_ingredients_df.append(ingredients_form, ignore_index=True).to_csv('./data/recipe_ingredients.csv',index=False)
