@@ -82,7 +82,8 @@ def recipe_search():
     recipe_df['img_source'] = recipe_df['img_source'].apply(lambda x: '<img class="food-img" src={}></img>'.format(x))
 
     keep_cols = ['keywords', 'details', 'img_source', 'food_name', 'source']
-    soup = BeautifulSoup(recipe_df[keep_cols].to_html(index=False, escape=False), "html.parser")
+    recipe_df_formatted =  recipe_df[keep_cols].rename(columns={'img_source':' ', 'food_name':'Recipe', 'source':'Submitter'})
+    soup = BeautifulSoup(recipe_df_formatted.to_html(index=False, escape=False), "html.parser")
     soup.find('table')['id'] = 'recipe-table'
     rows = soup.find_all('tr')
     rows[0]['class'] = 'header'

@@ -231,7 +231,7 @@
                   }
                   function validate() {
                     var rec_name = document.getElementsByName('recipe-name')[0] ;
-                    if (rec_name.value.length< 1 || rec_name.value.length>150){
+                    if (rec_name.value.length< 1 || rec_name.value.length>300){
                       console.log(rec_name.value.length);
                       var warning = document.getElementById("warning");
                       warning.innerHTML = 'Please enter a recipe name that is greater than 1 character and less than 150.';
@@ -286,7 +286,7 @@
                       return false;
                     }
                     var instructions = document.getElementsByName('text-instructions')[0] ;
-                    if (instructions.value.length< 1 || instructions.value.length>100000){
+                    if (instructions.value.length< 1 || instructions.value.length>1000000){
                       var warning = document.getElementById("warning");
                       warning.innerHTML = 'Please enter instructions that is greater than 1 character and less than 100000.';
                       warning.style.visibility = "visible";

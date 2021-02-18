@@ -59,7 +59,9 @@ onRowClick("recipe-table", function (row){
     // delete table rows
     var details_row = document.getElementById(rowid);
     var current_row = "";
+    var current_row_i = -10;
     if (details_row != null){
+      current_row_i = details_row.rowIndex - 1;
       current_row = details_row.previousElementSibling.getElementsByTagName("td")[0].textContent;
       details_row.parentNode.removeChild(details_row);
     };
@@ -67,10 +69,9 @@ onRowClick("recipe-table", function (row){
     var value = row.getElementsByTagName("td")[1].innerHTML;
     var row_num = row.closest('tr').rowIndex;
     //document.getElementById('click-response').innerHTML = value + " clicked!";
-    console.log("value>>", value);
-    console.log("Row num>>", row_num);
-
-    if (current_row != value) {
+    console.log("current_row", current_row_i);
+    console.log("row_num", row_num);
+    if (current_row_i != row_num) {
       console.log("Current row", current_row);
       console.log("value row", value);
       var table = document.getElementById("recipe-table");
@@ -79,7 +80,10 @@ onRowClick("recipe-table", function (row){
       var cell1 = row.insertCell(0);
       cell1.colSpan = "100";
       cell1.innerHTML =  value;
-    };
+    } else if (current_row == value){
+	rowid.remove();
+	console.log("removal!");
+   }
 });
 
 
