@@ -151,6 +151,8 @@ def register_recipe():
         print(text_instructions)
         ing_tags = request.form.get('ingredient-tags')
         source = request.form.get('submitter-source')
+        cook_time = request.form.get('cooktime')
+        cook_time_denom = request.form.get('cooktime-drpdwn-btn')
         print(ing_tags)
         print(source)
         new_row = {
@@ -163,7 +165,9 @@ def register_recipe():
             'source_type': [''],
             'img_source': [img_source],
             #'ingredients': [''],
-            'directions': [text_instructions]
+            'directions': [text_instructions],
+            'cook_time': [cook_time],
+            'cook_time_denom': [cook_time_denom]
         }
         new_meal_df = pd.DataFrame(new_row)
         print('new meal df')

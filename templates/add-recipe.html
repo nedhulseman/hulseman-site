@@ -118,6 +118,35 @@
             -->
             </div>
           </div>
+          <div id="form-row-vertical" class="form-row">
+            <div id="form-high" class="form">
+              <h4 class="form-header">Link to website (optional)</h3>
+              <div id="url-recipe-input" class="input-group mb-3" >
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Recipe Source</span>
+                </div>
+                <input  name="recipe-source" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+              </div>
+            </div>
+            <div id="form-high" class="form">
+              <h4 class="form-header">Cooking Time</h3>
+              <div id="url-recipe-input" class="input-group mb-3" >
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Cooking Time</span>
+                </div>
+                <input  name="cooktime" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                <div class="btn-group">
+                  <button name="cooktime-drpdwn-btn" type="button" id=`+id_name+'-drpdwn'+` onClick="addClickAction()" class="drpdwn btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    MINUTES
+                  </button>
+                  <div id=-cooktime_drpdwn' class='dropdown-menu'>
+                    <a class="dropdown-item" >HOURS</a>
+                    <a class="dropdown-item">MINUTES</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
               <!--
               <div id="url-recipe-input" class="input-group mb-3" >
